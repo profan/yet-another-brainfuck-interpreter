@@ -3,9 +3,13 @@ yet-another-brainfuck-interpreter
 
 Just a simple brainfuck interpreter written in Portable C (ANSI).
 
-To build run
+Building with GNU Make
 
 		make
+		
+Cleaning up binaries and object files
+
+		make clean
 
 Usage
 ------------
