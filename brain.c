@@ -10,6 +10,12 @@ void free_brain(Brain *brn) {
 	free(brn);
 }
 
+
+/******************************************************
+* Goes through all the instructions and matches brackets
+* with eachother so that you can index with a instruction
+* array index and get the other matching bracket position.
+**********************************************************/
 void init_brackets(Brain* brn) {
 	size_t stack[BRAIN_MAX_INPUT];
 	size_t st_ptr = 0;
@@ -23,8 +29,9 @@ void init_brackets(Brain* brn) {
 			brn->brackets[cur] = stack[--st_ptr];
 			brn->brackets[stack[st_ptr]] = cur;
 		}
-	}
-	if (st_ptr != 0) exit(EXIT_FAILURE);
+	} 
+	/* if stack is not empty, exit since a bracket or more was not matched. */
+	if (st_ptr != 0) exit(EXIT_FAILURE); 
 }
 
 int load_instr(Brain *brn, char *instructions, size_t instr_len) {
@@ -84,6 +91,9 @@ void run_instr(Brain *brn) {
 	}
 }
 
+/*****************************************
+* Simply prints the content of the first *******
+* 16 memory cells, a space separating each cell. */
 void dump_memory(Brain* brn) {
 	size_t i;
 	for (i = 0; i < BRAIN_DUMP_SIZE; ++i) {
