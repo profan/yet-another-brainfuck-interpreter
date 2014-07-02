@@ -1,0 +1,37 @@
+#Binaries
+bin/*
+*.exe
+*.bin
+
+#Intermediate objects
+obj/*
+*.o
+*.obj
+
+#Shell scripts
+*.sh
+
+#Vim swap files
+.*.s??
+
+#Debugging stuff
+*.log
+*.gch
+core
+
+#Tup related
+tup.config
+.tup/*
+
+#Data files
+*.txt
+
+#Batch files
+*.cmd
+*.bat
+
+#Brainfuck source
+*.b
+
+#yabi
+yabi
