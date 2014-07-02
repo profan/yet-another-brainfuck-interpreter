@@ -7,8 +7,6 @@ To build run
 
 		make
 
-Should have produced a binary (yabi).
-
 Usage
 ------------
 After building the interpreter, simply run it as such:
