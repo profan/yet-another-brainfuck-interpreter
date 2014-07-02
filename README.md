@@ -6,11 +6,13 @@ Just a simple brainfuck interpreter written in Portable C (ANSI).
 To build run
 	make
 
-==Usage==
+Usage
+------------
 After building the interpreter, simply run it as such:
 	yabi factorial.b
 
-==Details==
+Details
+------------
 * It uses byte sized cells.
 * By default it has 65536 memory cells at disposal
 * Max input size is also limited to 65536 characters (brain.h has defines).
@@ -19,6 +21,7 @@ After building the interpreter, simply run it as such:
 * Exits if the memory pointer goes outside the range of the memory cells.
 * Exits if the instruction pointer tries to reach outside of the range allocated. 
 
-==Credits==
+Credits
+------------
 Many thanks to daniel b cristofani and his collection of brainfuck interpreters and programs at:
 	http://www.hevanet.com/cristofd/brainfuck/
