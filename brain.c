@@ -1,9 +1,8 @@
 #include "brain.h"
 
-Brain* make_brain(unsigned int dumpsize) {
+Brain* make_brain() {
 	Brain *brn = (Brain*)malloc(sizeof(Brain));
 	memset(&brn->mem, 0, sizeof(brn->mem));
-	brn->dumpsize = dumpsize;
 	return brn;
 }
 
@@ -87,7 +86,7 @@ void run_instr(Brain *brn) {
 
 void dump_memory(Brain* brn) {
 	size_t i;
-	for (i = 0; i < brn->dumpsize; ++i) {
+	for (i = 0; i < BRAIN_DUMP_SIZE; ++i) {
 		printf("%d ", brn->mem[i]);
 	}
 	putchar('\n');

@@ -7,6 +7,7 @@
 
 #define BRAIN_MAX_INPUT 65536
 #define BRAIN_MEM_SIZE 65536
+#define BRAIN_DUMP_SIZE 16
 
 typedef struct {
 	char *instr;
@@ -14,10 +15,9 @@ typedef struct {
 	size_t brackets[BRAIN_MAX_INPUT];
 	char mem[BRAIN_MEM_SIZE];
 	size_t ptr;
-	unsigned int dumpsize;
 } Brain;
 
-Brain* make_brain(unsigned int dumpsize);
+Brain* make_brain();
 void free_brain(Brain *brn);
 void init_brackets(Brain* data);
 int load_instr(Brain *brn, char *instr, size_t instr_len);
