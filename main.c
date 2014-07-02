@@ -22,7 +22,7 @@ char* load_file(const char *filename, size_t *out_filesize) {
 	FILE *file;
 	size_t result;
 	file = fopen(filename, "r");
-	if (file == NULL) err("File error. \n", EXIT_FAILURE);
+	if (file == NULL) err("File error (does it exist?). \n", EXIT_FAILURE);
 	size_t filesize = get_filesize(file);
 	*out_filesize = filesize;
 
