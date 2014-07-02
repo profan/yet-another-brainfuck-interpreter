@@ -9,9 +9,9 @@ To build run
 
 Usage
 ------------
-After building the interpreter, simply run it as such:
+After building the interpreter, simply run it as such in your favorite terminal:
 
-		yabi filename
+		./yabi filename
 
 Details
 ------------
