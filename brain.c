@@ -51,7 +51,7 @@ void run_instr(Brain *brn) {
 			case '<': brn->ptr--; break;
 			case '+': brn->mem[brn->ptr]++; break;
 			case '-': brn->mem[brn->ptr]--; break;
-#if '\n' == 10 || defined NO_EOF_FILTER
+#if '\n' == 10 || defined NO_EOL_FILTER
 			case '.': putchar(brn->mem[brn->ptr]); break;
 			case ',': 
 				if ((in = getchar()) != EOF) 
