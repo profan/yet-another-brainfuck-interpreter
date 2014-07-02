@@ -4,12 +4,16 @@ yet-another-brainfuck-interpreter
 Just a simple brainfuck interpreter written in Portable C (ANSI).
 
 To build run
-	make
+
+		make
+
+Should have produced a binary (yabi).
 
 Usage
 ------------
 After building the interpreter, simply run it as such:
-	yabi factorial.b
+
+		yabi factorial.b
 
 Details
 ------------
