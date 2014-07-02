@@ -11,7 +11,7 @@ Usage
 ------------
 After building the interpreter, simply run it as such:
 
-		yabi factorial.b
+		yabi filename
 
 Details
 ------------
