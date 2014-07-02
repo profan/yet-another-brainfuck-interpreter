@@ -19,8 +19,8 @@ After building the interpreter, simply run it as such in your favorite terminal:
 
 Details
 ------------
-* It uses byte sized cells.
-* By default it has 65536 memory cells at disposal
+* It uses char sized cells (usually a single byte).
+* By default it has 65536 memory cells at its disposal.
 * Max input size is also limited to 65536 characters (brain.h has defines).
 * Converts EOF characters to 10 as per most brainfuck interpreters and back to EOF on the way out.
     * Can be turned off by defining 'NO_EOF_FILTER' when compiling.
