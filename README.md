@@ -46,3 +46,7 @@ Credits
 ------------
 Many thanks to daniel b cristofani and his collection of brainfuck interpreters and programs at:
 	http://www.hevanet.com/cristofd/brainfuck/
+
+License
+------------
+MIT
