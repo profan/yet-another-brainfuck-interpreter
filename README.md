@@ -15,7 +15,7 @@ Usage
 ------------
 After building the interpreter, simply run it as such in your favorite terminal:
 
-		./yabi filename
+		usage: yabi <filename> [<args>]
 
 Details
 ------------

@@ -1,10 +1,14 @@
+CC = gcc
 CFLAGS += -O3 -ansi -Wall
+DEPS = brain.h
 
 all: yabi
 
-yabi:
-	gcc $(CFLAGS) -c brain.c main.c
-	gcc $(CFLAGS) brain.o main.o -o yabi
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+yabi: main.o brain.o
+	$(CC) $(CFLAGS) -o yabi main.o brain.o -I.
 
 clean:
 	rm brain.o main.o yabi
