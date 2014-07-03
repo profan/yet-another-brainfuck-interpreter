@@ -3,6 +3,13 @@ yet-another-brainfuck-interpreter
 
 Just a simple brainfuck interpreter written in Portable C (ANSI).
 
+Requirements
+------------
+
+* ANSI-C compatible compiler (Makefile uses gcc by default).
+* GNU Make (only for build).
+
+
 Building with GNU Make
 
 		make
