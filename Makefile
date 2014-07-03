@@ -1,14 +1,25 @@
 CC = gcc
 CFLAGS += -O3 -ansi -Wall
-DEPS = brain.h
+DEPS = src/brain.h
 
-all: yabi
+all: dirs bin/yabi
 
-%.o: %.c $(DEPS)
+dirs: bin obj src
+
+bin:
+	mkdir bin
+
+obj:
+	mkdir obj
+
+src:
+	mkdir src
+
+obj/%.o: src/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-yabi: main.o brain.o
-	$(CC) $(CFLAGS) -o yabi main.o brain.o -I.
+bin/yabi: obj/main.o obj/brain.o
+	$(CC) $(CFLAGS) -o bin/yabi obj/main.o obj/brain.o -I.
 
 clean:
-	rm brain.o main.o yabi
+	rm bin/brain.o bin/main.o bin/yabi
