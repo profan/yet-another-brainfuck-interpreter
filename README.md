@@ -22,6 +22,7 @@ Downloading the source
 ------------
 
 Either with git clone as below or by downloading a zipball of the [latest.](https://github.com/Profan/yet-another-brainfuck-interpreter/archive/master.zip).
+
 		git clone https://github.com/Profan/yet-another-brainfuck-interpreter.git
 
 Usage
