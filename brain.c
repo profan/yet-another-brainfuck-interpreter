@@ -1,12 +1,12 @@
 #include "brain.h"
 
-Brain* make_brain() {
+Brain* brain_create() {
 	Brain *brn = (Brain*)malloc(sizeof(Brain));
 	memset(&brn->mem, 0, sizeof(brn->mem));
 	return brn;
 }
 
-void free_brain(Brain *brn) {
+void brain_destroy(Brain *brn) {
 	free(brn);
 }
 
@@ -16,7 +16,7 @@ void free_brain(Brain *brn) {
 * with eachother so that you can index with a instruction
 * array index and get the other matching bracket position.
 **********************************************************/
-void init_brackets(Brain* brn) {
+void brain_init_brackets(Brain* brn) {
 	size_t stack[BRAIN_MAX_INPUT];
 	size_t st_ptr = 0;
 
@@ -34,15 +34,15 @@ void init_brackets(Brain* brn) {
 	if (st_ptr != 0) exit(EXIT_FAILURE); 
 }
 
-int load_instr(Brain *brn, char *instructions, size_t instr_len) {
+int brain_load_instr(Brain *brn, char *instructions, size_t instr_len) {
 	brn->instr = instructions;
 	brn->instr_len = instr_len;
-	init_brackets(brn);
+	brain_init_brackets(brn);
 	brn->ptr = 0;
 	return 0;
 }
 
-void run_instr(Brain *brn) {
+void brain_run_instr(Brain *brn) {
 	int in;
 	size_t cur;
 	for (cur = 0; cur < brn->instr_len; ++cur) {
@@ -74,7 +74,7 @@ void run_instr(Brain *brn) {
 				if (brn->mem[brn->ptr])
 					cur = brn->brackets[cur];
 				break;
-			case '#': dump_memory(brn); break;
+			case '#': brain_dump_memory(brn); break;
 			default: break;
 		}
 		
@@ -94,7 +94,7 @@ void run_instr(Brain *brn) {
 /*****************************************
 * Simply prints the content of the first *******
 * 16 memory cells, a space separating each cell. */
-void dump_memory(Brain* brn) {
+void brain_dump_memory(Brain* brn) {
 	size_t i;
 	for (i = 0; i < BRAIN_DUMP_SIZE; ++i) {
 		printf("%d ", brn->mem[i]);

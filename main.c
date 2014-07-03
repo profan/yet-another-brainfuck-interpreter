@@ -40,11 +40,11 @@ int main(int argc, char **argv) {
 
 	size_t filesize;
 	char* instr = load_file(argv[1], &filesize);
-	Brain *data = make_brain();
-	load_instr(data, instr, filesize);
-	run_instr(data);
+	Brain *data = brain_create();
+	brain_load_instr(data, instr, filesize);
+	brain_run_instr(data);
 
-	free_brain(data);
+	brain_destroy(data);
 	free(instr);
 	return EXIT_SUCCESS;
 }

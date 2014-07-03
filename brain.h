@@ -17,11 +17,11 @@ typedef struct {
 	size_t ptr;
 } Brain;
 
-Brain* make_brain();
-void free_brain(Brain *brn);
-void init_brackets(Brain* data);
-int load_instr(Brain *brn, char *instr, size_t instr_len);
-void run_instr(Brain *brn);
-void dump_memory(Brain* brn);
+Brain* 	brain_create();
+void 	brain_destroy(Brain *brn);
+void 	brain_init_brackets(Brain* data);
+int 	brain_load_instr(Brain *brn, char *instr, size_t instr_len);
+void 	brain_run_instr(Brain *brn);
+void 	brain_dump_memory(Brain* brn);
 
 #endif
