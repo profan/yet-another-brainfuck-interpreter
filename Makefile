@@ -22,7 +22,7 @@ bin/yabi: obj/main.o obj/brain.o
 	$(CC) $(CFLAGS) -o bin/yabi obj/main.o obj/brain.o -I.
 
 clean:
-	rm bin/brain.o bin/main.o bin/yabi
+	rm obj/brain.o obj/main.o bin/yabi
 clean-all: clean
 	rmdir bin
 	rmdir obj
