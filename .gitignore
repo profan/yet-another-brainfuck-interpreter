@@ -1,7 +1,5 @@
 #Binaries
 bin/*
-*.exe
-*.bin
 
 #Intermediate objects
 obj/*
@@ -10,6 +8,8 @@ obj/*
 
 #Shell scripts
 *.sh
+*.cmd
+*.bat
 
 #Vim swap files
 .*.s??
@@ -19,19 +19,8 @@ obj/*
 *.gch
 core
 
-#Tup related
-tup.config
-.tup/*
-
-#Data files
-*.txt
-
-#Batch files
-*.cmd
-*.bat
-
 #Brainfuck source
 *.b
 
-#yabi
-yabi
+#argh
+mir/

@@ -23,3 +23,6 @@ bin/yabi: obj/main.o obj/brain.o
 
 clean:
 	rm bin/brain.o bin/main.o bin/yabi
+clean-all: clean
+	rmdir bin
+	rmdir obj
