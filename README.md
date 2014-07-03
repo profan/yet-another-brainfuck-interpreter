@@ -42,6 +42,11 @@ Details
 * Exits if the memory pointer goes outside the range of the memory cells.
 * Exits if the instruction pointer tries to reach outside of the range allocated. 
 
+TODO
+------------
+* Add interactive input mode.
+* Add debugging mode.
+
 Credits
 ------------
 Many thanks to daniel b cristofani and his collection of brainfuck interpreters and programs at:
