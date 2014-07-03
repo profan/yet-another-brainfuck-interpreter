@@ -46,7 +46,6 @@ TODO
 ------------
 - [ ] Add interactive input mode.
 - [ ] Add debugging mode.
-- [ ] 
 
 Credits
 ------------
