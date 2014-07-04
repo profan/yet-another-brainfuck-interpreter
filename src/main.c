@@ -50,9 +50,9 @@ char* load_file(const char *filename) {
 	if (file == NULL) err("File error (does it exist?). \n", EXIT_FAILURE);
 	size_t filesize = get_filesize(file);
 	
-	char* buf = (char*)malloc(sizeof(char)*filesize);
+	char *buf = malloc(sizeof(*buf)*filesize);
 	if (!buf) err("Memory error. \n", EXIT_FAILURE);
-	result = fread(buf, sizeof(char), filesize, file);
+	result = fread(buf, sizeof(*buf), filesize, file);
 	if (result != filesize) err("Reading error. \n", EXIT_FAILURE);
 	fclose(file);
 	return buf;

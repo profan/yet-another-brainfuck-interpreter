@@ -26,7 +26,7 @@
 #include "brain.h"
 
 Brain* brain_create() {
-	Brain *brn = (Brain*)malloc(sizeof(Brain));
+	Brain *brn = malloc(sizeof(*brn));
 	memset(&brn->mem, 0, sizeof(brn->mem));
 	return brn;
 }
