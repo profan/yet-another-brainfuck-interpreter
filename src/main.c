@@ -43,14 +43,13 @@ size_t get_filesize(FILE *file) {
 	return (size_t)size;
 }
 
-char* load_file(const char *filename, size_t *out_filesize) {
+char* load_file(const char *filename) {
 	FILE *file;
 	size_t result;
 	file = fopen(filename, "r");
 	if (file == NULL) err("File error (does it exist?). \n", EXIT_FAILURE);
 	size_t filesize = get_filesize(file);
-	*out_filesize = filesize;
-
+	
 	char* buf = (char*)malloc(sizeof(char)*filesize);
 	if (!buf) err("Memory error. \n", EXIT_FAILURE);
 	result = fread(buf, sizeof(char), filesize, file);
@@ -63,10 +62,9 @@ int main(int argc, char **argv) {
 	if (argc != 2)
 		usage();	
 
-	size_t filesize;
-	char* instr = load_file(argv[1], &filesize);
+	char* instr = load_file(argv[1]);
 	Brain *data = brain_create();
-	brain_load_instr(data, instr, filesize);
+	brain_load_instr(data, instr);
 	brain_run_instr(data);
 
 	brain_destroy(data);

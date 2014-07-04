@@ -44,7 +44,7 @@ typedef struct {
 Brain* 	brain_create();
 void 	brain_destroy(Brain *brn);
 void 	brain_init_brackets(Brain* data);
-int 	brain_load_instr(Brain *brn, char *instr, size_t instr_len);
+int 	brain_load_instr(Brain *brn, char *instr);
 void 	brain_run_instr(Brain *brn);
 void 	brain_dump_memory(Brain* brn);
 

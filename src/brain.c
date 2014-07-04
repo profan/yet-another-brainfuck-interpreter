@@ -59,9 +59,9 @@ void brain_init_brackets(Brain* brn) {
 	if (st_ptr != 0) exit(EXIT_FAILURE); 
 }
 
-int brain_load_instr(Brain *brn, char *instructions, size_t instr_len) {
+int brain_load_instr(Brain *brn, char *instructions) {
 	brn->instr = instructions;
-	brn->instr_len = instr_len;
+	brn->instr_len = strlen(instructions);
 	brain_init_brackets(brn);
 	brn->ptr = 0;
 	return 0;
