@@ -44,8 +44,8 @@ Details
 
 TODO
 ------------
-* Add interactive input mode.
-* Add debugging mode.
+- [ ] Add interactive input mode.
+- [ ] Add debugging mode.
 
 Credits
 ------------
@@ -54,4 +54,4 @@ Many thanks to daniel b cristofani and his collection of brainfuck interpreters 
 
 License
 ------------
-MIT
+See attached LICENSE file.
