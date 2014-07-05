@@ -27,7 +27,6 @@
 
 Brain* brain_create() {
 	Brain *brn = malloc(sizeof(*brn));
-	memset(&brn->mem, 0, sizeof(brn->mem));
 	return brn;
 }
 
@@ -63,6 +62,7 @@ int brain_load_instr(Brain *brn, char *instructions) {
 	brn->instr = instructions;
 	brn->instr_len = strlen(instructions);
 	brain_init_brackets(brn);
+	memset(&brn->mem, 0, sizeof(brn->mem));
 	brn->ptr = 0;
 	return 0;
 }
