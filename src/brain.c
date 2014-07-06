@@ -121,8 +121,9 @@ void brain_run_instr(Brain *brn) {
 * 16 memory cells, a space separating each cell. */
 void brain_dump_memory(Brain* brn) {
 	size_t i;
+	printf("\nMemory (0 - 15): ");
 	for (i = 0; i < BRAIN_DUMP_SIZE; ++i) {
-		printf("%d ", brn->mem[i]);
+		printf("%d ", (char)brn->mem[i]);
 	}
 	putchar('\n');
 }
