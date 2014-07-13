@@ -1,10 +1,10 @@
 CC = gcc
-CFLAGS += -O3 -ansi -Wall
+CFLAGS += -Wall -O3
 DEPS = src/brain.h
 
 all: dirs bin/yabi
 nofilter: all
-nofilter: CFLAGS += -DNO_EOL_FILTER
+nofilter: CFLAGS += -DBRAIN_NO_EOL_FILTER
 
 dirs: bin obj src
 
@@ -21,7 +21,7 @@ obj/%.o: src/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 bin/yabi: obj/main.o obj/brain.o
-	$(CC) $(CFLAGS) -o bin/yabi obj/main.o obj/brain.o -I.
+	$(CC) $(CFLAGS) $(LFLAGS) -o bin/yabi obj/main.o obj/brain.o -I.
 
 clean:
 	rm obj/brain.o obj/main.o bin/yabi

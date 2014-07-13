@@ -76,7 +76,7 @@ void brain_run_instr(Brain *brn) {
 			case '<': brn->ptr--; break;
 			case '+': brn->mem[brn->ptr]++; break;
 			case '-': brn->mem[brn->ptr]--; break;
-#if '\n' == 10 || defined NO_EOL_FILTER
+#if '\n' == 10 || defined BRAIN_NO_EOL_FILTER
 			case '.': putchar(brn->mem[brn->ptr]); break;
 			case ',': 
 				if ((in = getchar()) != EOF) 
@@ -102,6 +102,7 @@ void brain_run_instr(Brain *brn) {
 			case '#': brain_dump_memory(brn); break;
 			default: break;
 		}
+	
 		
 		if (brn->ptr > BRAIN_MEM_SIZE) {
 			printf("Memory pointer out of bounds, exiting. \n");
@@ -109,9 +110,10 @@ void brain_run_instr(Brain *brn) {
 		}
 
 		if (cur > brn->instr_len) {
-			printf("Early exit, attempted access outside instruction range. \n");
+			printf("Attempting access outside instruction range, exiting \n");
 			exit(EXIT_FAILURE);
 		}
+		
 
 	}
 }
