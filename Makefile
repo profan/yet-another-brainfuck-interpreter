@@ -3,6 +3,8 @@ CFLAGS += -O3 -ansi -Wall
 DEPS = src/brain.h
 
 all: dirs bin/yabi
+nofilter: all
+nofilter: CFLAGS += -DNO_EOL_FILTER
 
 dirs: bin obj src
 
