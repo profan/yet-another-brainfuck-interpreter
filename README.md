@@ -33,7 +33,7 @@ Usage
 ------------
 After building the interpreter, simply run it as such in your favorite terminal:
 
-		usage: yabi <filename> [<args>]
+		usage: yabi <filename>
 
 Details
 ------------
