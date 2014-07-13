@@ -50,6 +50,8 @@ TODO
 ------------
 - [ ] Add interactive input mode.
 - [ ] Add debugging mode.
+- [ ] Optimize increment/decrement operations done in sequence.
+- [ ] Optimize instruction stream by clearing out unused characters, such as spaces/comments at parse time.
 - [ ] Write tests.
 
 Credits
