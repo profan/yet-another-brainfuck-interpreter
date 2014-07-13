@@ -14,7 +14,11 @@ Building with GNU Make
 
 		make
 		
-Cleaning up binaries and object files
+Building without endline filtering, turning '\n' into 10 on input and 10 on output to '\n'...
+
+		make nofilter
+		
+Cleaning up binaries and object files (required to build new binary without filtering/with filtering if already built)
 
 		make clean
 
