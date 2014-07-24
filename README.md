@@ -14,7 +14,11 @@ Building with GNU Make
 
 		make
 		
-Cleaning up binaries and object files
+Building without endline filtering, turning '\n' into 10 on input and 10 on output to '\n'...
+
+		make nofilter
+		
+Cleaning up binaries and object files (required to build new binary without filtering/with filtering if already built)
 
 		make clean
 
@@ -29,7 +33,7 @@ Usage
 ------------
 After building the interpreter, simply run it as such in your favorite terminal:
 
-		usage: yabi <filename> [<args>]
+		usage: yabi <filename>
 
 Details
 ------------
@@ -47,6 +51,8 @@ TODO
 - [ ] Add possibility to use file as input.
 - [ ] Add interactive input mode.
 - [ ] Add debugging mode.
+- [ ] Optimize increment/decrement operations done in sequence.
+- [ ] Optimize instruction stream by clearing out unused characters, such as spaces/comments at parse time.
 - [ ] Write tests.
 
 Credits
