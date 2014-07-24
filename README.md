@@ -44,6 +44,7 @@ Details
 
 TODO
 ------------
+- [ ] Add possibility to use file as input.
 - [ ] Add interactive input mode.
 - [ ] Add debugging mode.
 - [ ] Write tests.
