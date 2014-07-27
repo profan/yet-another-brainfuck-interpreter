@@ -30,8 +30,20 @@
 #include <stdlib.h>
 
 #define BRAIN_MAX_INPUT 65536
-#define BRAIN_MEM_SIZE 65536
+#define BRAIN_MEM_SIZE 	65536
 #define BRAIN_DUMP_SIZE 16
+
+#define BRAIN_OP_ADD 			'+'
+#define BRAIN_OP_SUB 			'-'
+#define BRAIN_OP_PTR_LEFT 		'<'
+#define BRAIN_OP_PTR_RIGHT		'>'
+#define BRAIN_OP_INPUT			','
+#define BRAIN_OP_OUTPUT			'.'
+#define BRAIN_OP_LEFT_BRACKET	'['
+#define BRAIN_OP_RIGHT_BRACKET	']'
+#define BRAIN_OP_DUMP			'#'
+
+#define BRAIN_EOL 10 /* eol character value! */
 
 typedef struct {
 	char *instr;

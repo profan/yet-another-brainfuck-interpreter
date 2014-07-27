@@ -46,10 +46,10 @@ void brain_init_brackets(Brain* brn) {
 
 	size_t cur;
 	for (cur = 0; cur < brn->instr_len; ++cur) {
-		if (brn->instr[cur] == '[') {
+		if (brn->instr[cur] == BRAIN_OP_LEFT_BRACKET) {
 			stack[st_ptr++] = cur;
 		}
-		if (brn->instr[cur] == ']') {
+		if (brn->instr[cur] == BRAIN_OP_RIGHT_BRACKET) {
 			brn->brackets[cur] = stack[--st_ptr];
 			brn->brackets[stack[st_ptr]] = cur;
 		}
@@ -72,34 +72,34 @@ void brain_run_instr(Brain *brn) {
 	size_t cur;
 	for (cur = 0; cur < brn->instr_len; ++cur) {
 		switch (brn->instr[cur]) {
-			case '>': brn->ptr++; break;
-			case '<': brn->ptr--; break;
-			case '+': brn->mem[brn->ptr]++; break;
-			case '-': brn->mem[brn->ptr]--; break;
+			case BRAIN_OP_PTR_RIGHT: brn->ptr++; break;
+			case BRAIN_OP_PTR_LEFT: brn->ptr--; break;
+			case BRAIN_OP_ADD: brn->mem[brn->ptr]++; break;
+			case BRAIN_OP_SUB: brn->mem[brn->ptr]--; break;
 #if '\n' == 10 || defined BRAIN_NO_EOL_FILTER
-			case '.': putchar(brn->mem[brn->ptr]); break;
-			case ',': 
+			case BRAIN_OP_OUTPUT: putchar(brn->mem[brn->ptr]); break;
+			case BRAIN_OP_INPUT: 
 				if ((in = getchar()) != EOF) 
 					brn->mem[brn->ptr] = (char)in;
 				break;
 #else
-			case '.': 
-				putchar((brn->mem[brn->ptr]==10)?'\n':brn->mem[brn->ptr]); 
+			case BRAIN_OP_OUTPUT: 
+				putchar((brn->mem[brn->ptr] == BRAIN_EOL) ? '\n':brn->mem[brn->ptr]); 
 				break;
-			case ',': 
+			case BRAIN_OP_INPUT: 
 				if ((in = getchar()) != EOF) 
-					(brn->mem[brn->ptr]=(char)in)=='\n'?10:(char)in;
+					((brn->mem[brn->ptr]=(char)in) == '\n') ? BRAIN_EOL:(char)in;
 				break;
 #endif
-			case '[':
+			case BRAIN_OP_LEFT_BRACKET:
 				if (!brn->mem[brn->ptr]) 
 					cur = brn->brackets[cur];
 				break;
-			case ']':
+			case BRAIN_OP_RIGHT_BRACKET:
 				if (brn->mem[brn->ptr])
 					cur = brn->brackets[cur];
 				break;
-			case '#': brain_dump_memory(brn); break;
+			case BRAIN_OP_DUMP: brain_dump_memory(brn); break;
 			default: break;
 		}
 	
