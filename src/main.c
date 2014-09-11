@@ -35,20 +35,20 @@ void err(char* msg, int errcode) {
 	exit(errcode);
 }
 
-size_t get_filesize(FILE *file) {
+long get_filesize(FILE *file) {
 	fseek(file, 0, SEEK_END);
 	long size = ftell(file);
  	rewind(file);
 	if (size <= 0) err("Invalid file size. \n", EXIT_FAILURE);
-	return (size_t)size;
+	return size;
 }
 
 char* load_file(const char *filename) {
 	FILE *file;
-	size_t result;
+	long result;
 	file = fopen(filename, "r");
 	if (file == NULL) err("File error (does it exist?). \n", EXIT_FAILURE);
-	size_t filesize = get_filesize(file);
+	long filesize = get_filesize(file);
 	
 	char *buf = malloc(sizeof(*buf)*filesize);
 	if (!buf) err("Memory error. \n", EXIT_FAILURE);
