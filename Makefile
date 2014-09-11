@@ -1,10 +1,19 @@
 CC = gcc
 CFLAGS += -Wall -O3
 DEPS = src/brain.h src/util.h
+OBJECTS = obj/brain.o obj/util.o
 
-all: dirs bin/yabi
+all: dirs yabin
+
+YABI_BINARY = yabi
+yabin: $(YABI_BINARY)
+yabin: OBJECTS += obj/main.o
+
 nofilter: all
 nofilter: CFLAGS += -DBRAIN_NO_EOL_FILTER
+
+TEST_BINARY = yatests
+testbin: $(TEST_BINARY)
 
 dirs: bin obj src
 
@@ -20,11 +29,14 @@ src:
 obj/%.o: src/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-bin/yabi: obj/main.o obj/brain.o obj/util.o
-	$(CC) $(CFLAGS) $(LFLAGS) -o bin/yabi obj/main.o obj/brain.o obj/util.o -I.
+$(YABI_BINARY): $(OBJECTS)
+	$(CC) $(CFLAGS) $(LFLAGS) -o bin/$(YABI_BINARY) $(OBJECTS) -I.
+
+$(TEST_BINARY): $(OBJECTS)
+	$(CC) $(CFLAGS) $(LFLAGS) -o bin/$(TEST_BINARY) $(OBJECTS) -I.
 
 clean:
-	rm obj/brain.o obj/main.o obj/util.o bin/yabi
+	rm $(OBJECTS) bin/$(YABI_BINARY) bin/$(TEST_BINARY)
 clean-all: clean
 	rmdir bin
 	rmdir obj

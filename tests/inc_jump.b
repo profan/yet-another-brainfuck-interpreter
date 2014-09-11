@@ -1,3 +1,3 @@
 +++++[ //loop counter run 5 times
 	>+++++++++++++<- //add 13 to second memory cell and decrement loop counter
-]>. //when counter is 0, print.
+]> //move counter to incremented cell, should be 65(A)
