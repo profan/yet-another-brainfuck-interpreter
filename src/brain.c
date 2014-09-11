@@ -109,11 +109,15 @@ void brain_run_instr(Brain *brn) {
 		
 		if (brn->ptr > BRAIN_MEM_SIZE) {
 			printf("ERROR: Memory pointer out of bounds, exiting with failure.\n");
+			printf(" - pointer was at: %zu\n", brn->ptr);
+			printf(" - cells allocated: %d\n", BRAIN_MEM_SIZE);
 			exit(EXIT_FAILURE);
 		}
 
 		if (cur > brn->instr_len) {
 			printf("ERROR: Attempting access outside instruction range, exiting with failure.\n");
+			printf(" - access was at: %zu\n", cur);
+			printf(" - instruction size was: %zu\n", brn->instr_len);
 			exit(EXIT_FAILURE);
 		}
 		
