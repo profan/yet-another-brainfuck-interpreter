@@ -1,7 +1,7 @@
 /*
 * The MIT License (MIT)
 *
-* Copyright (c) 2014 Robin Hübner <robinhubner@gmail.com
+* Copyright (c) 2014 Robin Hübner <robinhubner@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,33 @@
 */
 
 #include "util.h"
-#include "brain.h"
 
-void usage() {
-	printf("usage: yabi <filename> [<args>] \n");
-	exit(EXIT_FAILURE);
+void err(char *msg, int errcode) {
+	fputs(msg, stderr);
+	exit(errcode);
 }
 
-int main(int argc, char **argv) {
-	if (argc != 2)
-		usage();	
-
-	char* instr = load_file(argv[1]);
-	Brain *data = brain_create();
-	brain_load_instr(data, instr);
-	brain_run_instr(data);
-
-	brain_destroy(data);
-	free(instr);
-	return EXIT_SUCCESS;
+long get_filesize(FILE *file) {
+	fseek(file, 0, SEEK_END);
+	long size = ftell(file);
+ 	rewind(file);
+	if (size <= 0) err("Invalid file size. \n", EXIT_FAILURE);
+	return size;
 }
+
+char* load_file(const char *filename) {
+	FILE *file;
+	long result;
+	file = fopen(filename, "r");
+	if (file == NULL) err("File error (does it exist?). \n", EXIT_FAILURE);
+	long filesize = get_filesize(file);
+	
+	char *buf = malloc(sizeof(*buf)*filesize);
+	if (!buf) err("Memory error. \n", EXIT_FAILURE);
+	result = fread(buf, sizeof(*buf), filesize, file);
+	if (result != filesize) err("Reading error. \n", EXIT_FAILURE);
+	fclose(file);
+	return buf;
+}
+
 

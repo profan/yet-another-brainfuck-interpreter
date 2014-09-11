@@ -1,7 +1,7 @@
 /*
 * The MIT License (MIT)
 *
-* Copyright (c) 2014 Robin Hübner <robinhubner@gmail.com
+* Copyright (c) 2014 Robin Hübner <robinhubner@gmail.com>
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,14 @@
 * SOFTWARE.
 */
 
-#include "util.h"
-#include "brain.h"
+#ifndef BRAIN_UTIL_H
+#define BRAIN_UTIL_H
 
-void usage() {
-	printf("usage: yabi <filename> [<args>] \n");
-	exit(EXIT_FAILURE);
-}
+#include <stdio.h>
+#include <stdlib.h>
 
-int main(int argc, char **argv) {
-	if (argc != 2)
-		usage();	
+void err(char *msg, int errcode);
+long get_filesize(FILE *file);
+char* load_file(const char *filename);
 
-	char* instr = load_file(argv[1]);
-	Brain *data = brain_create();
-	brain_load_instr(data, instr);
-	brain_run_instr(data);
-
-	brain_destroy(data);
-	free(instr);
-	return EXIT_SUCCESS;
-}
-
+#endif
