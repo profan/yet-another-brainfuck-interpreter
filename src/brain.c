@@ -55,7 +55,10 @@ void brain_init_brackets(Brain* brn) {
 		}
 	} 
 	/* if stack is not empty, exit since a bracket or more was not matched. */
-	if (st_ptr != 0) exit(EXIT_FAILURE); 
+	if (st_ptr != 0) {
+		printf("ERROR: Unmatched bracket during initiation process, exiting with failure.\n");
+		exit(EXIT_FAILURE); 
+	}
 }
 
 int brain_load_instr(Brain *brn, char *instructions) {
@@ -105,12 +108,12 @@ void brain_run_instr(Brain *brn) {
 	
 		
 		if (brn->ptr > BRAIN_MEM_SIZE) {
-			printf("Memory pointer out of bounds, exiting. \n");
+			printf("ERROR: Memory pointer out of bounds, exiting with failure.\n");
 			exit(EXIT_FAILURE);
 		}
 
 		if (cur > brn->instr_len) {
-			printf("Attempting access outside instruction range, exiting \n");
+			printf("ERROR: Attempting access outside instruction range, exiting with failure.\n");
 			exit(EXIT_FAILURE);
 		}
 		
