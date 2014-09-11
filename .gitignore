@@ -20,7 +20,7 @@ obj/*
 core
 
 #Brainfuck source
-*.b
+examples/*.b
 
 #argh
 mir/
