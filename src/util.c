@@ -37,6 +37,12 @@ long get_filesize(FILE *file) {
 	return size;
 }
 
+long fread_str(char *buf, size_t buf_size, long filesize, FILE *file) {
+	long result = fread(buf, buf_size, filesize, file);
+	buf[filesize] = '\0';
+	return result;
+}
+
 char* load_file(const char *filename) {
 	FILE *file;
 	long result;
@@ -44,9 +50,9 @@ char* load_file(const char *filename) {
 	if (file == NULL) err("File error (does it exist?). \n", EXIT_FAILURE);
 	long filesize = get_filesize(file);
 	
-	char *buf = malloc(sizeof(*buf)*filesize);
+	char *buf = malloc((sizeof(*buf)*filesize)+1);
 	if (!buf) err("Memory error. \n", EXIT_FAILURE);
-	result = fread(buf, sizeof(*buf), filesize, file);
+	result = fread_str(buf, sizeof(*buf), filesize, file);
 	if (result != filesize) err("Reading error. \n", EXIT_FAILURE);
 	fclose(file);
 	return buf;
