@@ -56,7 +56,7 @@ void brain_init_brackets(Brain* brn) {
 	} 
 	/* if stack is not empty, exit since a bracket or more was not matched. */
 	if (st_ptr != 0) {
-		printf("ERROR: Unmatched bracket during initiation process, exiting with failure.\n");
+		printf("ERROR: Unmatched bracket during initialization process, exiting with failure.\n");
 		exit(EXIT_FAILURE); 
 	}
 }
