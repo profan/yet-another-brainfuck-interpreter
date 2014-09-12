@@ -41,6 +41,8 @@ void brain_destroy(Brain *brn) {
 * array index and get the other matching bracket position.
 **********************************************************/
 void brain_init_brackets(Brain* brn) {
+
+	memset(&brn->brackets, 0, sizeof(brn->brackets));
 	size_t stack[BRAIN_MAX_INPUT];
 	size_t st_ptr = 0;
 
@@ -49,7 +51,7 @@ void brain_init_brackets(Brain* brn) {
 		if (brn->instr[cur] == BRAIN_OP_LEFT_BRACKET) {
 			stack[st_ptr++] = cur;
 		}
-		if (brn->instr[cur] == BRAIN_OP_RIGHT_BRACKET) {
+		else if (brn->instr[cur] == BRAIN_OP_RIGHT_BRACKET) {
 			brn->brackets[cur] = stack[--st_ptr];
 			brn->brackets[stack[st_ptr]] = cur;
 		}

@@ -56,6 +56,7 @@ static char *test_inc_jump() {
 
 static char *test_dec_jump() {
 	test_run("tests/dec_jump.b");
+	printf("brain->mem[1]: %d\n", brain->mem[1]);
 	mu_assert("[dec_jump]: brain->mem[1] does not equal -65!", brain->mem[1] == -65);
 	return 0;
 }
@@ -68,9 +69,9 @@ static char *test_output() {
 	return 0;
 }
 
-static char *test_ptrmov() {
+static char *test_ptr_mov() {
 	test_run("tests/ptr_mov.b");
-	mu_assert("brain->ptr position not 0!", brain->ptr == 0);
+	mu_assert("[ptr_rmov] brain->ptr position not 0!", brain->ptr == 0);
 	return 0;
 }
 
