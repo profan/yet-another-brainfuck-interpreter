@@ -95,7 +95,7 @@ void brain_run_instr(Brain *brn) {
 				break;
 #endif
 			case BRAIN_OP_LEFT_BRACKET:
-				if (!brn->mem[brn->ptr]) 
+				if (brn->mem[brn->ptr] == 0) 
 					cur = brn->brackets[cur];
 				break;
 			case BRAIN_OP_RIGHT_BRACKET:
