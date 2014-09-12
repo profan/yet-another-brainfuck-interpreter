@@ -42,7 +42,6 @@ void brain_destroy(Brain *brn) {
 **********************************************************/
 void brain_init_brackets(Brain* brn) {
 
-	memset(&brn->brackets, 0, sizeof(brn->brackets));
 	size_t stack[BRAIN_MAX_INPUT];
 	size_t st_ptr = 0;
 
@@ -66,8 +65,9 @@ void brain_init_brackets(Brain* brn) {
 int brain_load_instr(Brain *brn, char *instructions) {
 	brn->instr = instructions;
 	brn->instr_len = strlen(instructions);
-	brain_init_brackets(brn);
+	memset(&brn->brackets, 0, sizeof(brn->brackets));
 	memset(&brn->mem, 0, sizeof(brn->mem));
+	brain_init_brackets(brn);
 	brn->ptr = 0;
 	return 0;
 }
