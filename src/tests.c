@@ -37,23 +37,23 @@ static void test_run(const char *testfile) {
 
 static char *test_inc() {
 	test_run("tests/inc.b");
-	mu_assert("mem[0] does not equal 65(A)!", mem[0] == 65);
+	mu_assert("brain->mem[0] does not equal 65(A)!", brain->mem[0] == 65);
 }
 
 static char *test_dec() {
 	test_run("tests/dec.b");
-	mu_assert("mem[0] does not equal -65!", mem[0] == -65);
+	mu_assert("brain->mem[0] does not equal -65!", brain->mem[0] == -65);
 }
 
 static char *test_inc_jump() {
 	test_run("tests/inc_jump.b");
-	mu_assert("mem[0] does not equal 65(A)!", mem[0] == 65);
+	mu_assert("brain->mem[0] does not equal 65(A)!", brain->mem[0] == 65);
 	return 0;
 }
 
 static char *test_dec_jump() {
 	test_run("tests/dec_jump.b");
-	mu_assert("mem[0] does not equal -65!", mem[0] == -65);
+	mu_assert("brain->mem[0] does not equal -65!", brain->mem[0] == -65);
 	return 0;
 }
 
@@ -66,7 +66,9 @@ static char *test_output() {
 }
 
 static char *test_ptrmov() {
-	
+	run_test("test/ptr_mov.b");
+	mu_assert("brain->ptr position not 0!", brain->ptr == 0);
+	return 0;
 }
 
 static char *test_tape() {
