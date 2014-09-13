@@ -48,7 +48,7 @@ Details
 
 TODO
 ------------
-- [ ] Add possibility to use file as input.
+- [x] Add possibility to use file as input.
 - [ ] Add interactive input mode.
 - [ ] Add debugging mode.
 - [ ] Optimize increment/decrement operations done in sequence.
