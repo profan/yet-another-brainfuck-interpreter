@@ -16,7 +16,6 @@ tests: $(TEST_BINARY)
 nofilter: all
 nofilter: CFLAGS += -DBRAIN_NO_EOL_FILTER
 
-
 dirs: bin obj src
 
 bin:
