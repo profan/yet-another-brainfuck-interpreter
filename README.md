@@ -6,7 +6,8 @@ Just a simple brainfuck interpreter written in Portable C (ANSI).
 Requirements
 ------------
 
-* ANSI-C compatible compiler (Makefile uses gcc by default).
+* ANSI-C compatible compiler (Makefile uses system default compiler (CC variable)).
+  * Testing is done on gcc 4.6 and clang 3.4.
 * GNU Make (only for build).
 
 
