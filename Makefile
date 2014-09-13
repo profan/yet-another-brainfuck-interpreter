@@ -36,6 +36,9 @@ $(BINARY): $(OBJECTS) $(TARGET_OBJECTS)
 $(TEST_BINARY): $(OBJECTS) $(TEST_OBJECTS)
 	$(CC) $(LFLAGS) $^ -o $@
 
+test: $(TEST_BINARY)
+	./$(TEST_BINARY)
+
 clean:
 	rm $(OBJECTS) $(BINARY) $(TEST_BINARY)
 clean-all: clean
