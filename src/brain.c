@@ -27,6 +27,9 @@
 
 Brain* brain_create() {
 	Brain *brn = malloc(sizeof(*brn));
+	brn->in = stdin;
+	brn->out = stdout;
+	brn->err = stderr;
 	return brn;
 }
 
@@ -57,7 +60,7 @@ void brain_init_brackets(Brain* brn) {
 	} 
 	/* if stack is not empty, exit since a bracket or more was not matched. */
 	if (st_ptr != 0) {
-		printf("ERROR: Unmatched bracket during initiation process, exiting with failure.\n");
+		fprintf(brn->err, "ERROR: Unmatched bracket during initiation process, exiting with failure.\n");
 		exit(EXIT_FAILURE); 
 	}
 }
@@ -72,6 +75,18 @@ int brain_load_instr(Brain *brn, char *instructions) {
 	return 0;
 }
 
+void brain_set_in_fd(Brain *brn, FILE *file) {
+	brn->in = file;
+}
+
+void brain_set_out_fd(Brain *brn, FILE *file) {
+	brn->out = file;
+}
+
+void brain_set_err_fd(Brain *brn, FILE *file) {
+	brn->err = file;
+}
+
 void brain_run_instr(Brain *brn) {
 	int in;
 	size_t cur;
@@ -82,17 +97,17 @@ void brain_run_instr(Brain *brn) {
 			case BRAIN_OP_ADD: brn->mem[brn->ptr]++; break;
 			case BRAIN_OP_SUB: brn->mem[brn->ptr]--; break;
 #if '\n' == 10 || defined BRAIN_NO_EOL_FILTER
-			case BRAIN_OP_OUTPUT: putchar(brn->mem[brn->ptr]); break;
+			case BRAIN_OP_OUTPUT: putc(brn->mem[brn->ptr], brn->out); break;
 			case BRAIN_OP_INPUT: 
-				if ((in = getchar()) != EOF) 
+				if ((in = getc(brn->in)) != EOF) 
 					brn->mem[brn->ptr] = (char)in;
 				break;
 #else
 			case BRAIN_OP_OUTPUT: 
-				putchar((brn->mem[brn->ptr] == BRAIN_EOL) ? '\n':brn->mem[brn->ptr]); 
+				putc((brn->mem[brn->ptr] == BRAIN_EOL, brn->out) ? '\n':brn->mem[brn->ptr]); 
 				break;
 			case BRAIN_OP_INPUT: 
-				if ((in = getchar()) != EOF) 
+				if ((in = getc(brn->in)) != EOF) 
 					((brn->mem[brn->ptr]=(char)in) == '\n') ? BRAIN_EOL:(char)in;
 				break;
 #endif
@@ -110,16 +125,16 @@ void brain_run_instr(Brain *brn) {
 	
 		
 		if (brn->ptr > BRAIN_MEM_SIZE) {
-			printf("ERROR: Memory pointer out of bounds, exiting with failure.\n");
-			printf(" - pointer was at: %zu\n", brn->ptr);
-			printf(" - cells allocated: %d\n", BRAIN_MEM_SIZE);
+			fprintf(brn->err, "ERROR: Memory pointer out of bounds, exiting with failure.\n");
+			fprintf(brn->err, " - pointer was at: %zu\n", brn->ptr);
+			fprintf(brn->err, " - cells allocated: %d\n", BRAIN_MEM_SIZE);
 			exit(EXIT_FAILURE);
 		}
 
 		if (cur > brn->instr_len) {
-			printf("ERROR: Attempting access outside instruction range, exiting with failure.\n");
-			printf(" - access was at: %zu\n", cur);
-			printf(" - instruction size was: %zu\n", brn->instr_len);
+			fprintf(brn->err, "ERROR: Attempting access outside instruction range, exiting with failure.\n");
+			fprintf(brn->err, " - access was at: %zu\n", cur);
+			fprintf(brn->err, " - instruction size was: %zu\n", brn->instr_len);
 			exit(EXIT_FAILURE);
 		}
 		
@@ -132,9 +147,9 @@ void brain_run_instr(Brain *brn) {
 * 16 memory cells, a space separating each cell. */
 void brain_dump_memory(Brain* brn) {
 	size_t i;
-	printf("\n[DEBUG] Memory (0 - 15): ");
+	fprintf(brn->err, "\n[DEBUG] Memory (0 - 15): ");
 	for (i = 0; i < BRAIN_DUMP_SIZE; ++i) {
-		printf("%d ", (char)brn->mem[i]);
+		fprintf(brn->err, "%d ", (char)brn->mem[i]);
 	}
-	putchar('\n');
+	putc('\n', brn->err);
 }
