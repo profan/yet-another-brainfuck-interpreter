@@ -39,24 +39,28 @@ static void test_run(const char *testfile) {
 static char *test_inc() {
 	test_run("tests/inc.b");
 	mu_assert("[inc]: brain->mem[0] does not equal 65(A)!", brain->mem[0] == 65);
+	mu_assert("[inc]: brain->ptr does not equal 0!", brain->ptr == 0);
 	return 0;
 }
 
 static char *test_dec() {
 	test_run("tests/dec.b");
 	mu_assert("[dec]: brain->mem[0] does not equal -65!", brain->mem[0] == -65);
+	mu_assert("[dec]: brain->ptr does not equal 0!", brain->ptr == 0);
 	return 0;
 }
 
 static char *test_inc_jump() {
 	test_run("tests/inc_jump.b");
 	mu_assert("[inc_jump]: brain->mem[1] does not equal 65(A)!", brain->mem[1] == 65);
+	mu_assert("[inc_jump]: brain->ptr does not equal 1!", brain->ptr == 1);
 	return 0;
 }
 
 static char *test_dec_jump() {
 	test_run("tests/dec_jump.b");
 	mu_assert("[dec_jump]: brain->mem[1] does not equal -65!", brain->mem[1] == -65);
+	mu_assert("[dec_jump]: brain->ptr does not equal 1!", brain->ptr == 1);
 	return 0;
 }
 
@@ -65,6 +69,10 @@ static char *test_jump() {
 }
 
 static char *test_output() {
+	FILE *fp = fopen("output.txt", "ab+"); 
+	brain_set_out_fd(brain, fp);
+	test_run("tests/output.b");
+	fclose(fp);
 	return 0;
 }
 
@@ -88,10 +96,12 @@ static void destroy() {
 
 static char *all_tests() {
 	setup();
+	mu_run_test(test_ptr_mov);
 	mu_run_test(test_inc);
 	mu_run_test(test_dec);
 	mu_run_test(test_inc_jump);
 	mu_run_test(test_dec_jump);
+	mu_run_test(test_output);
 	destroy();
 	return 0;
 }
