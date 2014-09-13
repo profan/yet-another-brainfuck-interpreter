@@ -1,1 +1,2 @@
+make
 ./bin/yatests
