@@ -1,2 +1,4 @@
 language: c
-script: "./run-tests.sh"
+before_script:
+    - chmod +x run_tests.sh
+script: ./script/ci/run-tests.sh
