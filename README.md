@@ -14,6 +14,10 @@ Requirements
 Building with GNU Make
 
 		make
+
+Running the test suite
+
+		make test
 		
 Building without endline filtering, turning '\n' into 10 on input and 10 on output to '\n'...
 
