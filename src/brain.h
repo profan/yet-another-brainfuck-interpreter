@@ -47,14 +47,11 @@
 
 typedef struct {
 	char *instr;
-	size_t instr_len;
+	size_t instr_len, ptr;
 	size_t brackets[BRAIN_MAX_INPUT];
 	char mem[BRAIN_MEM_SIZE];
-	size_t ptr;
-	/* file descriptors for rerouting input and output, will be stdin/stdout by default. */
-	FILE *in;
-	FILE *out;
-	FILE *err;
+	/* file descriptors for rerouting input and output, will be stdin/stderr/stdout by default. */
+	FILE *in, *out, *err;
 } Brain;
 
 Brain* 	brain_create();
