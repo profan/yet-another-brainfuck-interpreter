@@ -47,7 +47,6 @@ void brain_parse_instr(Brain *brn, char *instr) {
 	size_t instr_len = strlen(instr);
 
 	size_t newsize = 0;
-	brn->instr = calloc(instr_len, sizeof(*brn->instr));
 	
 	char token;
 	size_t cur;
@@ -78,8 +77,7 @@ void brain_parse_instr(Brain *brn, char *instr) {
 		}
 	}
 
-	/* resize allocated memory to actual size of instruction stream. */
-	brn->instr = realloc(brn->instr, sizeof(*brn->instr)*newsize);
+	/* set actual instruction length size. */
 	brn->instr_len = newsize;
 
 }
@@ -117,6 +115,7 @@ void brain_init_brackets(Brain* brn) {
 }
 
 int brain_load_instr(Brain *brn, char *instructions) {
+	memset(&brn->instr, 0, sizeof(brn->instr));
 	brain_parse_instr(brn, instructions);
 	memset(&brn->mem, 0, sizeof(brn->mem));
 	brain_init_brackets(brn);
