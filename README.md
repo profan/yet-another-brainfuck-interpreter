@@ -53,13 +53,13 @@ Details
 
 TODO
 ------------
-- [x] Add possibility to use file as input.
+- [ ] Add possibility to use file as input.
 - [ ] Add interactive input mode.
 - [ ] Add debugging mode.
-- [ ] Optimize increment/decrement operations done in sequence.
-- [ ] Optimize pointer movement operations done in sequence.
-- [ ] Optimize instruction stream by clearing out unused characters, such as spaces/comments at parse time.
-- [ ] Write tests.
+- [x] Optimize increment/decrement operations done in sequence.
+- [x] Optimize pointer movement operations done in sequence.
+- [x] Optimize instruction stream by clearing out unused characters, such as spaces/comments at parse time.
+- [x] Write tests(needs more).
 
 Credits
 ------------

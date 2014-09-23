@@ -52,8 +52,8 @@ typedef struct {
 
 typedef struct {
 	Instruction instr[BRAIN_MAX_INPUT];
-	size_t instr_len, ptr;
 	char mem[BRAIN_MEM_SIZE];
+	size_t instr_len, ptr;
 	FILE *in, *out, *err;
 } Brain;
 
