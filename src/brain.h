@@ -46,7 +46,12 @@
 #define BRAIN_EOL 10 /* eol character value! */
 
 typedef struct {
-	char *instr;
+	char type;
+	size_t value; /* Can represent both jump point for a bracket, or increment/decrement value for ADD/SUB/MOVLEFT/MOVRIGHT */
+} Instruction;
+
+typedef struct {
+	Instruction *instr;
 	size_t instr_len, ptr;
 	size_t brackets[BRAIN_MAX_INPUT];
 	char mem[BRAIN_MEM_SIZE];
@@ -56,6 +61,7 @@ typedef struct {
 
 Brain* 	brain_create();
 void 	brain_destroy(Brain *brn);
+void	brain_parse_instr(Brain *data, char *instr);
 void 	brain_init_brackets(Brain* data);
 int 	brain_load_instr(Brain *brn, char *instr);
 void	brain_set_in_fd(Brain *brn, FILE *file);

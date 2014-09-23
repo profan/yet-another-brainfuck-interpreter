@@ -37,6 +37,39 @@ void brain_destroy(Brain *brn) {
 	free(brn);
 }
 
+/**************************************************
+* Traverses the instruction stream, removing redundant
+* instructions for faster execution.
+* >>>>> would become 5x >
+*******************************************************/
+
+void brain_parse_instr(Brain *brn, char *instr) {
+	char token;
+	size_t instr_len = strlen(instr);
+
+	size_t newsize = 0;
+	brn->instr = malloc(sizeof(*brn->instr)*instr_len);
+	
+	size_t cur;
+	for (cur = 0; cur < instr_len; ++cur) {
+		token = instr[cur];
+
+		if (token != brn->instr[newsize].type) {
+			brn->instr[newsize].type = token;
+			brn->instr[newsize].value = 1;
+			++newsize;
+		} else {
+			if (token == BRAIN_OP_ADD || token == BRAIN_OP_SUB || token == BRAIN_OP_PTR_LEFT || token == BRAIN_OP_PTR_RIGHT) {
+				++brn->instr[newsize].value;
+			}
+		}
+	}
+
+	/* resize allocated memory to actual size of instruction stream. */
+	brn->instr = realloc(brn->instr, sizeof(*brn->instr)*newsize);
+	brn->instr_len = newsize;
+
+}
 
 /******************************************************
 * Goes through all the instructions and matches brackets
@@ -49,11 +82,13 @@ void brain_init_brackets(Brain* brn) {
 	size_t st_ptr = 0;
 
 	size_t cur;
+	char token;
 	for (cur = 0; cur < brn->instr_len; ++cur) {
-		if (brn->instr[cur] == BRAIN_OP_LEFT_BRACKET) {
+		token = brn->instr[cur].type;
+		if (token == BRAIN_OP_LEFT_BRACKET) {
 			stack[st_ptr++] = cur;
 		}
-		else if (brn->instr[cur] == BRAIN_OP_RIGHT_BRACKET) {
+		else if (token == BRAIN_OP_RIGHT_BRACKET) {
 			brn->brackets[cur] = stack[--st_ptr];
 			brn->brackets[stack[st_ptr]] = cur;
 		}
@@ -66,8 +101,7 @@ void brain_init_brackets(Brain* brn) {
 }
 
 int brain_load_instr(Brain *brn, char *instructions) {
-	brn->instr = instructions;
-	brn->instr_len = strlen(instructions);
+	brain_parse_instr(brn, instructions);
 	memset(&brn->brackets, 0, sizeof(brn->brackets));
 	memset(&brn->mem, 0, sizeof(brn->mem));
 	brain_init_brackets(brn);
@@ -91,11 +125,11 @@ void brain_run_instr(Brain *brn) {
 	int in;
 	size_t cur;
 	for (cur = 0; cur < brn->instr_len; ++cur) {
-		switch (brn->instr[cur]) {
-			case BRAIN_OP_PTR_RIGHT: brn->ptr++; break;
-			case BRAIN_OP_PTR_LEFT: brn->ptr--; break;
-			case BRAIN_OP_ADD: brn->mem[brn->ptr]++; break;
-			case BRAIN_OP_SUB: brn->mem[brn->ptr]--; break;
+		switch (brn->instr[cur].type) {
+			case BRAIN_OP_PTR_RIGHT: brn->ptr += brn->instr[cur].value; break;
+			case BRAIN_OP_PTR_LEFT: brn->ptr -= brn->instr[cur].value; break;
+			case BRAIN_OP_ADD: brn->mem[brn->ptr] += brn->instr[cur].value; break;
+			case BRAIN_OP_SUB: brn->mem[brn->ptr] -= brn->instr[cur].value; break;
 #if '\n' == 10 || defined BRAIN_NO_EOL_FILTER
 			case BRAIN_OP_OUTPUT: putc(brn->mem[brn->ptr], brn->out); break;
 			case BRAIN_OP_INPUT: 
