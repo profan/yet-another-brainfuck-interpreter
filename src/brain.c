@@ -40,16 +40,15 @@ void brain_destroy(Brain *brn) {
 /**************************************************
 * Traverses the instruction stream, removing redundant
 * instructions for faster execution.
+* Removes all non-instructions from stream and turns
+* several sequential instructions into single ops.
 * >>>>> would become {>, 5}, +++++ would become {+, 5}
 *******************************************************/
 
 void brain_parse_instr(Brain *brn, char *instr) {
-	size_t instr_len = strlen(instr);
-
-	size_t newsize = 0;
 	
 	char token;
-	size_t cur;
+	size_t cur, newsize = 0, instr_len = strlen(instr);
 	for (cur = 0; cur < instr_len; ++cur) {
 		token = instr[cur];
 		

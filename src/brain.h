@@ -54,7 +54,6 @@ typedef struct {
 	Instruction instr[BRAIN_MAX_INPUT];
 	size_t instr_len, ptr;
 	char mem[BRAIN_MEM_SIZE];
-	/* file descriptors for rerouting input and output, will be stdin/stderr/stdout by default. */
 	FILE *in, *out, *err;
 } Brain;
 
