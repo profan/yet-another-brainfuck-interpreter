@@ -40,19 +40,32 @@ void brain_destroy(Brain *brn) {
 /**************************************************
 * Traverses the instruction stream, removing redundant
 * instructions for faster execution.
-* >>>>> would become 5x >
+* >>>>> would become {>, 5}, +++++ would become {+, 5}
 *******************************************************/
 
 void brain_parse_instr(Brain *brn, char *instr) {
-	char token;
 	size_t instr_len = strlen(instr);
 
 	size_t newsize = 0;
-	brn->instr = malloc(sizeof(*brn->instr)*instr_len);
+	brn->instr = calloc(instr_len, sizeof(*brn->instr));
 	
+	char token;
 	size_t cur;
 	for (cur = 0; cur < instr_len; ++cur) {
 		token = instr[cur];
+		
+		if (token != BRAIN_OP_ADD && 
+			token != BRAIN_OP_SUB && 
+			token != BRAIN_OP_PTR_LEFT &&
+			token != BRAIN_OP_PTR_RIGHT && 
+			token != BRAIN_OP_INPUT && 
+			token != BRAIN_OP_OUTPUT && 
+			token != BRAIN_OP_LEFT_BRACKET &&
+			token != BRAIN_OP_RIGHT_BRACKET && 
+			token != BRAIN_OP_DUMP) 
+		{
+				continue;
+		}
 
 		if (token != brn->instr[newsize].type) {
 			brn->instr[newsize].type = token;
@@ -78,7 +91,7 @@ void brain_parse_instr(Brain *brn, char *instr) {
 **********************************************************/
 void brain_init_brackets(Brain* brn) {
 
-	size_t stack[BRAIN_MAX_INPUT];
+	size_t *stack = malloc(sizeof(*stack)*brn->instr_len);
 	size_t st_ptr = 0;
 
 	size_t cur;
@@ -89,8 +102,8 @@ void brain_init_brackets(Brain* brn) {
 			stack[st_ptr++] = cur;
 		}
 		else if (token == BRAIN_OP_RIGHT_BRACKET) {
-			brn->brackets[cur] = stack[--st_ptr];
-			brn->brackets[stack[st_ptr]] = cur;
+			brn->instr[cur].value = stack[--st_ptr];
+			brn->instr[stack[st_ptr]].value = cur;
 		}
 	} 
 	/* if stack is not empty, exit since a bracket or more was not matched. */
@@ -98,11 +111,13 @@ void brain_init_brackets(Brain* brn) {
 		fprintf(brn->err, "ERROR: Unmatched bracket during initiation process, exiting with failure.\n");
 		exit(EXIT_FAILURE); 
 	}
+
+	free(stack);
+
 }
 
 int brain_load_instr(Brain *brn, char *instructions) {
 	brain_parse_instr(brn, instructions);
-	memset(&brn->brackets, 0, sizeof(brn->brackets));
 	memset(&brn->mem, 0, sizeof(brn->mem));
 	brain_init_brackets(brn);
 	brn->ptr = 0;
@@ -147,11 +162,11 @@ void brain_run_instr(Brain *brn) {
 #endif
 			case BRAIN_OP_LEFT_BRACKET:
 				if (brn->mem[brn->ptr] == 0) 
-					cur = brn->brackets[cur];
+					cur = brn->instr[cur].value;
 				break;
 			case BRAIN_OP_RIGHT_BRACKET:
 				if (brn->mem[brn->ptr])
-					cur = brn->brackets[cur];
+					cur = brn->instr[cur].value;
 				break;
 			case BRAIN_OP_DUMP: brain_dump_memory(brn); break;
 			default: break;

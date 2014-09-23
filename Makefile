@@ -1,4 +1,5 @@
 CFLAGS += -Wall -O3
+LFLAGS += -Wall -O3
 DEPS = src/brain.h src/util.h
 OBJECTS = obj/brain.o obj/util.o
 TARGET_OBJECTS = obj/main.o
