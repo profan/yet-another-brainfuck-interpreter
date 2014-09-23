@@ -6,13 +6,18 @@ Just a simple brainfuck interpreter written in Portable C (ANSI).
 Requirements
 ------------
 
-* ANSI-C compatible compiler (Makefile uses gcc by default).
+* ANSI-C compatible compiler (Makefile uses system default C compiler).
+  * Testing is done on gcc 4.6 and clang 3.4.
 * GNU Make (only for build).
 
 
 Building with GNU Make
 
 		make
+
+Running the test suite
+
+		make test
 		
 Building without endline filtering, turning '\n' into 10 on input and 10 on output to '\n'...
 
@@ -51,10 +56,10 @@ TODO
 - [ ] Add possibility to use file as input.
 - [ ] Add interactive input mode.
 - [ ] Add debugging mode.
-- [ ] Optimize increment/decrement operations done in sequence.
-- [ ] Optimize pointer movement operations done in sequence.
-- [ ] Optimize instruction stream by clearing out unused characters, such as spaces/comments at parse time.
-- [ ] Write tests.
+- [x] Optimize increment/decrement operations done in sequence.
+- [x] Optimize pointer movement operations done in sequence.
+- [x] Optimize instruction stream by clearing out unused characters, such as spaces/comments at parse time.
+- [x] Write tests(needs more).
 
 Credits
 ------------

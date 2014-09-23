@@ -29,8 +29,8 @@
 #include <stdlib.h>
 
 void err(char *msg, int errcode);
-long get_filesize(FILE *file);
-long fread_str(char *buf, size_t buf_size, long filesize, FILE *file);
+size_t get_filesize(FILE *file);
+size_t fread_str(char *buf, size_t buf_size, size_t filesize, FILE *file);
 char* load_file(const char *filename);
 
 #endif

@@ -29,7 +29,7 @@ void err(char *msg, int errcode) {
 	exit(errcode);
 }
 
-long get_filesize(FILE *file) {
+size_t get_filesize(FILE *file) {
 	fseek(file, 0, SEEK_END);
 	long size = ftell(file);
  	rewind(file);
@@ -37,18 +37,18 @@ long get_filesize(FILE *file) {
 	return size;
 }
 
-long fread_str(char *buf, size_t buf_size, long filesize, FILE *file) {
-	long result = fread(buf, buf_size, filesize, file);
+size_t fread_str(char *buf, size_t buf_size, size_t filesize, FILE *file) {
+	size_t result = fread(buf, buf_size, filesize, file);
 	buf[filesize] = '\0';
 	return result;
 }
 
 char* load_file(const char *filename) {
 	FILE *file;
-	long result;
+	size_t result;
 	file = fopen(filename, "r");
 	if (file == NULL) err("File error (does it exist?). \n", EXIT_FAILURE);
-	long filesize = get_filesize(file);
+	size_t filesize = get_filesize(file);
 	
 	char *buf = malloc((sizeof(*buf)*filesize)+1);
 	if (!buf) err("Memory error. \n", EXIT_FAILURE);
