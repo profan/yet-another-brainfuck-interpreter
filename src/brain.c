@@ -89,10 +89,9 @@ void brain_parse_instr(Brain *brn, char *instr) {
 void brain_init_brackets(Brain* brn) {
 
 	size_t *stack = malloc(sizeof(*stack)*brn->instr_len);
-	size_t st_ptr = 0;
-
-	size_t cur;
+	size_t cur, st_ptr = 0;
 	char token;
+	
 	for (cur = 0; cur < brn->instr_len; ++cur) {
 		token = brn->instr[cur].type;
 		if (token == BRAIN_OP_LEFT_BRACKET) {

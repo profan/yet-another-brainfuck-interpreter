@@ -38,7 +38,6 @@ static void test_run(const char *testfile) {
 
 static char *test_inc() {
 	test_run("tests/inc.b");
-	printf("[inc]: brain->mem[0]: %d\n", brain->mem[0]);
 	mu_assert("[inc]: brain->mem[0] does not equal 65(A)!", brain->mem[0] == 65);
 	mu_assert("[inc]: brain->ptr does not equal 0!", brain->ptr == 0);
 	return 0;
