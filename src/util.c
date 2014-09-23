@@ -37,9 +37,9 @@ size_t get_filesize(FILE *file) {
 	return size;
 }
 
-size_t fread_str(char *buf, size_t buf_size, size_t file_size, FILE *file) {
-	size_t result = fread(buf, buf_size, file_size, file);
-	buf[file_size] = '\0';
+size_t fread_str(char *buf, size_t buf_size, size_t filesize, FILE *file) {
+	size_t result = fread(buf, buf_size, filesize, file);
+	buf[filesize] = '\0';
 	return result;
 }
 
@@ -48,12 +48,12 @@ char* load_file(const char *filename) {
 	size_t result;
 	file = fopen(filename, "r");
 	if (file == NULL) err("File error (does it exist?). \n", EXIT_FAILURE);
-	size_t file_size = get_filesize(file);
+	size_t filesize = get_filesize(file);
 	
-	char *buf = malloc((sizeof(*buf)*file_size)+1);
+	char *buf = malloc((sizeof(*buf)*filesize)+1);
 	if (!buf) err("Memory error. \n", EXIT_FAILURE);
-	result = fread_str(buf, sizeof(*buf), file_size, file);
-	if (result != file_size) err("Reading error. \n", EXIT_FAILURE);
+	result = fread_str(buf, sizeof(*buf), filesize, file);
+	if (result != filesize) err("Reading error. \n", EXIT_FAILURE);
 	fclose(file);
 	return buf;
 }
