@@ -144,6 +144,14 @@ void brain_run_instr(Brain *brn) {
 			case BRAIN_OP_PTR_LEFT: brn->ptr -= brn->instr[cur].value; break;
 			case BRAIN_OP_ADD: brn->mem[brn->ptr] += brn->instr[cur].value; break;
 			case BRAIN_OP_SUB: brn->mem[brn->ptr] -= brn->instr[cur].value; break;
+			case BRAIN_OP_LEFT_BRACKET:
+				if (brn->mem[brn->ptr] == 0) 
+					cur = brn->instr[cur].value;
+				break;
+			case BRAIN_OP_RIGHT_BRACKET:
+				if (brn->mem[brn->ptr])
+					cur = brn->instr[cur].value;
+				break;
 #if '\n' == 10 || defined BRAIN_NO_EOL_FILTER
 			case BRAIN_OP_OUTPUT: putc(brn->mem[brn->ptr], brn->out); break;
 			case BRAIN_OP_INPUT: 
@@ -159,14 +167,6 @@ void brain_run_instr(Brain *brn) {
 					((brn->mem[brn->ptr]=(char)in) == '\n') ? BRAIN_EOL:(char)in;
 				break;
 #endif
-			case BRAIN_OP_LEFT_BRACKET:
-				if (brn->mem[brn->ptr] == 0) 
-					cur = brn->instr[cur].value;
-				break;
-			case BRAIN_OP_RIGHT_BRACKET:
-				if (brn->mem[brn->ptr])
-					cur = brn->instr[cur].value;
-				break;
 			case BRAIN_OP_DUMP: brain_dump_memory(brn); break;
 			default: break;
 		}
