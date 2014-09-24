@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Profan/yet-another-brainfuck-interpreter.svg?branch=master)](https://travis-ci.org/Profan/yet-another-brainfuck-interpreter)
+
 yet-another-brainfuck-interpreter
 =================================
 
