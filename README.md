@@ -45,7 +45,7 @@ After building the interpreter, simply run it as such in your favorite terminal:
 Details
 ------------
 * Cleans up comments and no-op characters at parse-time.
-p* Turns consecutive ptrmov/arithmetic operations into single operations(>>> into {>, 3}, +++ into {+, 3})
+* Turns consecutive ptrmov/arithmetic operations into single operations(>>> into {>, 3}, +++ into {+, 3})
 * It uses char sized cells (usually a single byte).
 * By default it has 65536 memory cells at its disposal.
 * Max input size is also limited to 65536 characters (brain.h has defines).
