@@ -27,7 +27,7 @@
 #include "minunit.h"
 
 Brain *brain;
-int tests_run = 0;
+int tests_run = 0; /* connects with extern in minunit.h */
 
 static void test_run(const char *testfile) {
 	char *instr = load_file(testfile);
@@ -96,12 +96,12 @@ static void destroy() {
 
 static char *all_tests() {
 	setup();
-	mu_run_test(test_ptr_mov);
-	mu_run_test(test_inc);
-	mu_run_test(test_dec);
-	mu_run_test(test_inc_jump);
-	mu_run_test(test_dec_jump);
-	mu_run_test(test_output);
+	mu_run_test("[ptr_mov]", test_ptr_mov);
+	mu_run_test("[test_inc]", test_inc);
+	mu_run_test("[test_dec]",  test_dec);
+	mu_run_test("[test_inc_jump]", test_inc_jump);
+	mu_run_test("[test_dec_jump]", test_dec_jump);
+	mu_run_test("[test_output]", test_output);
 	destroy();
 	return 0;
 }
@@ -114,6 +114,6 @@ int main(void) {
 		printf("ALL TESTS PASSED.\n");
 	}
 	
-	printf("Tests run: %d\n", tests_run); /* extern comes from minunit.h */
+	printf("Tests run: %d\n", tests_run);
 	return result != 0;
 }
