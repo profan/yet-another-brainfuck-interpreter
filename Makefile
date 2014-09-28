@@ -1,6 +1,6 @@
-CFLAGS += -Wall -O3
+CFLAGS += -Wall -O3 -I include
 LFLAGS += -Wall -O3
-DEPS = src/brain.h src/util.h
+DEPS = include/brain.h include/util.h
 OBJECTS = obj/brain.o obj/util.o
 TARGET_OBJECTS = obj/main.o
 TEST_OBJECTS = obj/tests.o

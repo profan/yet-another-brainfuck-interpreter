@@ -59,8 +59,6 @@ typedef struct {
 
 Brain* 	brain_create();
 void 	brain_destroy(Brain *brn);
-void	brain_parse_instr(Brain *data, char *instr);
-void 	brain_init_brackets(Brain* data);
 int 	brain_load_instr(Brain *brn, char *instr);
 void	brain_set_in_fd(Brain *brn, FILE *file);
 void	brain_set_out_fd(Brain *brn, FILE *file);

@@ -45,7 +45,7 @@ void brain_destroy(Brain *brn) {
 * >>>>> would become {>, 5}, +++++ would become {+, 5}
 *******************************************************/
 
-void brain_parse_instr(Brain *brn, char *instr) {
+static void brain_parse_instr(Brain *brn, char *instr) {
 	
 	char token;
 	size_t cur, newsize = 0, instr_len = strlen(instr);
@@ -86,7 +86,7 @@ void brain_parse_instr(Brain *brn, char *instr) {
 * with eachother so that you can index with a instruction
 * array index and get the other matching bracket position.
 **********************************************************/
-void brain_init_brackets(Brain* brn) {
+static void brain_init_brackets(Brain* brn) {
 
 	size_t *stack = malloc(sizeof(*stack)*brn->instr_len);
 	size_t cur, st_ptr = 0;
