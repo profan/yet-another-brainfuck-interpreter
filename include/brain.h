@@ -46,8 +46,8 @@
 #define BRAIN_EOL 10 /* eol character value! */
 
 typedef struct {
-	char type;
 	size_t value; /* Can represent both jump point for a bracket, or increment/decrement value for ADD/SUB/MOVLEFT/MOVRIGHT */
+	char type;
 } Instruction;
 
 typedef struct {
