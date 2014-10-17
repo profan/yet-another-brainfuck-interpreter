@@ -44,6 +44,7 @@ After building the interpreter, simply run it as such in your favorite terminal:
 
 Details
 ------------
+* Single header lib, just include lib/brain.h and you're set.
 * Cleans up comments and no-op characters at parse-time.
 * Turns consecutive ptrmov/arithmetic operations into single operations(>>> into {>, 3}, +++ into {+, 3})
 * It uses char sized cells (usually a single byte).
