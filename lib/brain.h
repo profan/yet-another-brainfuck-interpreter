@@ -50,6 +50,9 @@
 #define BRAIN_MEM_OUT_OF_BOUNDS 3
 #define BRAIN_INIT_BRACKET_MISMATCH 4
 
+/* flags! */
+#define BRAIN_MODE_REPL (1 << 0)
+
 typedef struct {
 	size_t value; /* Can represent both jump point for a bracket, or increment/decrement value for ADD/SUB/MOVLEFT/MOVRIGHT */
 	char type;
@@ -60,6 +63,7 @@ typedef struct {
 	char mem[BRAIN_MEM_SIZE];
 	size_t instr_len, ptr;
 	FILE *in, *out, *err;
+	unsigned int flags;
 } Brain;
 
 Brain* 	brain_create();
@@ -163,13 +167,14 @@ static int brain_init_brackets(Brain* brn) {
 int brain_load_instr(Brain *brn, char *instructions) {
 	memset(&brn->instr, 0, sizeof(brn->instr));
 	brain_parse_instr(brn, instructions);
-	memset(&brn->mem, 0, sizeof(brn->mem));
 
 	int init_status;
 	if ((init_status = brain_init_brackets(brn)) != 0)
 		return init_status;
 
+	memset(&brn->mem, 0, sizeof(brn->mem));
 	brn->ptr = 0;
+
 	return 0;
 }
 

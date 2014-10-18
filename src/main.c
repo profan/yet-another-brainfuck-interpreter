@@ -22,25 +22,56 @@
 * SOFTWARE.
 */
 
+#include <argp.h>
 #include "util.h"
 #include "brain.h"
 
-void usage() {
-	printf("usage: yabi <filename> [<args>] \n");
-	exit(EXIT_FAILURE);
+const char *argp_program_version = "yet-another-brainfuck-interpreter v1.0";
+const char *argp_program_bug_address = "<robinhubner@gmail.com>";
+static char doc[] = "Simple brainfuck interpreter with REPL.";
+static char args_doc[] = "[filename]...";
+static struct argp_option options[] = { 
+	{ "input", 'i', "FILE", 0, "Brainfuck file to load."},
+	{ "repl", 'r', 0, OPTION_ARG_OPTIONAL, "Start interpreter in REPL mode."},
+	{ 0 } 
+};
+
+struct arguments {
+    const char *input_file;
+	enum { STANDARD_MODE, REPL_MODE } mode;
+};
+
+static error_t parse_opt(int key, char *arg, struct argp_state *state) {
+	struct arguments *args = state->input;
+	switch (key) {
+		case 'i': args->input_file = arg; break;
+		case 'r': args->mode = REPL_MODE; break;
+		case ARGP_KEY_ARG: return 0;
+		default: return ARGP_ERR_UNKNOWN;
+	}   
+	return 0;
 }
 
+static struct argp argp = { options, parse_opt, args_doc, doc, 0, 0, 0 };
+
 int main(int argc, char **argv) {
-	if (argc != 2)
-		usage();	
+	struct arguments args;
+	args.mode = STANDARD_MODE;
+	argp_parse(&argp, argc, argv, 0, 0, &args);	
 
-	char* instr = load_file(argv[1]);
-	Brain *data = brain_create();
-	brain_load_instr(data, instr);
-	int statuscode = brain_run_instr(data);
+	if (args.mode == STANDARD_MODE) {
+		char* instr = load_file(args.input_file);
+		Brain *data = brain_create();
+		brain_load_instr(data, instr);
+		int statuscode = brain_run_instr(data);
+		brain_destroy(data);
+		free(instr);
+	} else if (args.mode == REPL_MODE) {
+		return EXIT_FAILURE;
+	} else {
+		return EXIT_FAILURE;
+	}	
 
-	brain_destroy(data);
-	free(instr);
 	return 0;
 }
 
