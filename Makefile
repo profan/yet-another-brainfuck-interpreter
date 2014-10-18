@@ -1,4 +1,4 @@
-CFLAGS += -Wall -O3 -I include -I lib
+CFLAGS += -Wall -O3 -I lib -I include
 LFLAGS += -Wall -O3
 DEPS = lib/brain.h include/util.h
 OBJECTS = obj/util.o
@@ -40,7 +40,7 @@ test: $(TEST_BINARY)
 	./$(TEST_BINARY)
 
 clean:
-	rm $(OBJECTS) $(BINARY) $(TEST_BINARY)
+	rm obj/* $(BINARY) $(TEST_BINARY)
 clean-all: clean
 	rmdir bin
 	rmdir obj
