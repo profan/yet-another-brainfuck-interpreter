@@ -45,6 +45,11 @@
 
 #define BRAIN_EOL 10 /* eol character value! */
 
+/* error return codes! */
+#define BRAIN_PC_OUT_OF_BOUNDS 2
+#define BRAIN_MEM_OUT_OF_BOUNDS 3
+#define BRAIN_INIT_BRACKET_MISMATCH 4
+
 typedef struct {
 	size_t value; /* Can represent both jump point for a bracket, or increment/decrement value for ADD/SUB/MOVLEFT/MOVRIGHT */
 	char type;
@@ -63,7 +68,7 @@ int 	brain_load_instr(Brain *brn, char *instr);
 void	brain_set_in_fd(Brain *brn, FILE *file);
 void	brain_set_out_fd(Brain *brn, FILE *file);
 void	brain_set_err_fd(Brain *brn, FILE *file);
-void 	brain_run_instr(Brain *brn);
+int 	brain_run_instr(Brain *brn);
 void 	brain_dump_memory(Brain* brn);
 
 /* End of prototypes and header, implementation follows. */
@@ -129,7 +134,7 @@ static void brain_parse_instr(Brain *brn, char *instr) {
 * with eachother so that you can index with a instruction
 * array index and get the other matching bracket position.
 **********************************************************/
-static void brain_init_brackets(Brain* brn) {
+static int brain_init_brackets(Brain* brn) {
 
 	size_t *stack = malloc(sizeof(*stack)*brn->instr_len);
 	size_t cur, st_ptr = 0;
@@ -145,21 +150,25 @@ static void brain_init_brackets(Brain* brn) {
 			brn->instr[stack[st_ptr]].value = cur;
 		}
 	} 
-	/* if stack is not empty, exit since a bracket or more was not matched. */
+	/* if stack is not empty, return since a bracket or more was not matched. */
 	if (st_ptr != 0) {
-		fprintf(brn->err, "ERROR: Unmatched bracket during initiation process, exiting with failure.\n");
-		exit(EXIT_FAILURE); 
+		fprintf(brn->err, "ERROR: Unmatched bracket during initiation process, returning with failure.\n");
+		return BRAIN_INIT_BRACKET_MISMATCH;
 	}
 
 	free(stack);
-
+	return 0;
 }
 
 int brain_load_instr(Brain *brn, char *instructions) {
 	memset(&brn->instr, 0, sizeof(brn->instr));
 	brain_parse_instr(brn, instructions);
 	memset(&brn->mem, 0, sizeof(brn->mem));
-	brain_init_brackets(brn);
+
+	int init_status;
+	if ((init_status = brain_init_brackets(brn)) != 0)
+		return init_status;
+
 	brn->ptr = 0;
 	return 0;
 }
@@ -176,22 +185,22 @@ void brain_set_err_fd(Brain *brn, FILE *file) {
 	brn->err = file;
 }
 
-void brain_run_instr(Brain *brn) {
+int brain_run_instr(Brain *brn) {
 	int in;
-	size_t cur;
-	for (cur = 0; cur < brn->instr_len; ++cur) {
-		switch (brn->instr[cur].type) {
-			case BRAIN_OP_PTR_RIGHT: brn->ptr += brn->instr[cur].value; break;
-			case BRAIN_OP_PTR_LEFT: brn->ptr -= brn->instr[cur].value; break;
-			case BRAIN_OP_ADD: brn->mem[brn->ptr] += brn->instr[cur].value; break;
-			case BRAIN_OP_SUB: brn->mem[brn->ptr] -= brn->instr[cur].value; break;
+	size_t pc;
+	for (pc = 0; pc < brn->instr_len; ++pc) {
+		switch (brn->instr[pc].type) {
+			case BRAIN_OP_PTR_RIGHT: brn->ptr += brn->instr[pc].value; break;
+			case BRAIN_OP_PTR_LEFT: brn->ptr -= brn->instr[pc].value; break;
+			case BRAIN_OP_ADD: brn->mem[brn->ptr] += brn->instr[pc].value; break;
+			case BRAIN_OP_SUB: brn->mem[brn->ptr] -= brn->instr[pc].value; break;
 			case BRAIN_OP_LEFT_BRACKET:
 				if (brn->mem[brn->ptr] == 0) 
-					cur = brn->instr[cur].value;
+					pc = brn->instr[pc].value;
 				break;
 			case BRAIN_OP_RIGHT_BRACKET:
 				if (brn->mem[brn->ptr])
-					cur = brn->instr[cur].value;
+					pc = brn->instr[pc].value;
 				break;
 #if '\n' == 10 || defined BRAIN_NO_EOL_FILTER
 			case BRAIN_OP_OUTPUT: putc(brn->mem[brn->ptr], brn->out); break;
@@ -214,21 +223,22 @@ void brain_run_instr(Brain *brn) {
 	
 		
 		if (brn->ptr > BRAIN_MEM_SIZE) {
-			fprintf(brn->err, "ERROR: Memory pointer out of bounds, exiting with failure.\n");
+			fprintf(brn->err, "ERROR: Memory pointer out of bounds, returning with failure.\n");
 			fprintf(brn->err, " - pointer was at: %zu\n", brn->ptr);
 			fprintf(brn->err, " - cells allocated: %d\n", BRAIN_MEM_SIZE);
-			exit(EXIT_FAILURE);
+			return BRAIN_MEM_OUT_OF_BOUNDS;
 		}
 
-		if (cur > brn->instr_len) {
-			fprintf(brn->err, "ERROR: Attempting access outside instruction range, exiting with failure.\n");
-			fprintf(brn->err, " - access was at: %zu\n", cur);
+		if (pc > brn->instr_len) {
+			fprintf(brn->err, "ERROR: Attempting access outside instruction range, returning with failure.\n");
+			fprintf(brn->err, " - access was at: %zu\n", pc);
 			fprintf(brn->err, " - instruction size was: %zu\n", brn->instr_len);
-			exit(EXIT_FAILURE);
+			return BRAIN_PC_OUT_OF_BOUNDS;
 		}
 		
 
 	}
+	return 0;
 }
 
 /*****************************************

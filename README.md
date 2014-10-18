@@ -53,8 +53,8 @@ Details
 * Converts newline characters to 10 on input and back to platform newline on output, if required.
     * Can be turned off by defining 'NO_EOL_FILTER' when compiling.
 * Includes a special '#' character commonly implemented as debug printing of memory cells, once passed over in code it emits the content of the 16 first memory cells, space separated, ending with a newline.
-* Exits if the memory pointer goes outside the range of the memory cells.
-* Exits if the instruction pointer tries to reach outside of the range allocated. 
+* Returns BRAIN_MEM_OUT_OF_BOUNDS the memory pointer goes outside the range of the memory cells.
+* Returns BRAIN_PC_OUT_OF_BOUNDS if the instruction pointer tries to reach outside of the range allocated. 
 
 TODO
 ------------

@@ -37,10 +37,10 @@ int main(int argc, char **argv) {
 	char* instr = load_file(argv[1]);
 	Brain *data = brain_create();
 	brain_load_instr(data, instr);
-	brain_run_instr(data);
+	int statuscode = brain_run_instr(data);
 
 	brain_destroy(data);
 	free(instr);
-	return EXIT_SUCCESS;
+	return 0;
 }
 
