@@ -29,25 +29,41 @@
 const char *argp_program_version = "yet-another-brainfuck-interpreter v1.0";
 const char *argp_program_bug_address = "<robinhubner@gmail.com>";
 static char doc[] = "Simple brainfuck interpreter with REPL.";
-static char args_doc[] = "[filename]...";
-static struct argp_option options[] = { 
-	{ "input", 'i', "FILE", 0, "Brainfuck file to load."},
+static char args_doc[] = "sourcefile";
+static struct argp_option options[] = {
+	{ "input", 'i', "FILE", OPTION_ARG_OPTIONAL, "Use file as input instead of stdin."},
+	{ "error", 'e', "FILE", OPTION_ARG_OPTIONAL, "Use file as error output instead of stderr."},
+	{ "output", 'o', "FILE", OPTION_ARG_OPTIONAL, "Use file as output instead of stdout."},
 	{ "repl", 'r', 0, OPTION_ARG_OPTIONAL, "Start interpreter in REPL mode."},
 	{ 0 } 
 };
 
 struct arguments {
-    const char *input_file;
+	char *args[1];
+	char *input, *error, *output;
 	enum { STANDARD_MODE, REPL_MODE } mode;
 };
 
 static error_t parse_opt(int key, char *arg, struct argp_state *state) {
 	struct arguments *args = state->input;
 	switch (key) {
-		case 'i': args->input_file = arg; break;
-		case 'r': args->mode = REPL_MODE; break;
-		case ARGP_KEY_ARG: return 0;
-		default: return ARGP_ERR_UNKNOWN;
+		case 'i': args->input = arg; break;
+		case 'e': args->error = arg; break;
+		case 'o': args->output = arg; break;
+		case 'r': 
+			args->mode = REPL_MODE; 
+			break;
+		case ARGP_KEY_ARG:
+			if (state->arg_num >= 1)
+				argp_usage(state);
+			args->args[state->arg_num] = arg;
+			break;
+		case ARGP_KEY_END:
+			if (state->arg_num < 1)
+				argp_usage(state);
+			break;
+		default: 
+			return ARGP_ERR_UNKNOWN;
 	}   
 	return 0;
 }
@@ -60,7 +76,7 @@ int main(int argc, char **argv) {
 	argp_parse(&argp, argc, argv, 0, 0, &args);	
 
 	if (args.mode == STANDARD_MODE) {
-		char* instr = load_file(args.input_file);
+		char* instr = load_file(args.args[0]);
 		Brain *data = brain_create();
 		brain_load_instr(data, instr);
 		int statuscode = brain_run_instr(data);
