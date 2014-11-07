@@ -51,10 +51,10 @@ Details
 * By default it has 65536 memory cells at its disposal.
 * Max input size is also limited to 65536 characters (brain.h has defines).
 * Converts newline characters to 10 on input and back to platform newline on output, if required.
-    * Can be turned off by defining 'NO_EOL_FILTER' when compiling.
+    * Can be turned off by defining 'NO\_EOL\_FILTER' when compiling.
 * Includes a special '#' character commonly implemented as debug printing of memory cells, once passed over in code it emits the content of the 16 first memory cells, space separated, ending with a newline.
-* Returns BRAIN_MEM_OUT_OF_BOUNDS the memory pointer goes outside the range of the memory cells.
-* Returns BRAIN_PC_OUT_OF_BOUNDS if the instruction pointer tries to reach outside of the range allocated. 
+* Returns BRAIN\_MEM\_OUT\_OF\_BOUNDS the memory pointer goes outside the range of the memory cells.
+* Returns BRAIN\_PC\_OUT\_OF\_BOUNDS if the instruction pointer tries to reach outside of the range allocated. 
 
 TODO
 ------------
