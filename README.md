@@ -58,12 +58,8 @@ Details
 
 TODO
 ------------
-- [ ] Add possibility to use file as input.
 - [ ] Add interactive input mode.
 - [ ] Add debugging mode.
-- [x] Optimize increment/decrement operations done in sequence.
-- [x] Optimize pointer movement operations done in sequence.
-- [x] Optimize instruction stream by clearing out unused characters, such as spaces/comments at parse time.
 - [ ] More sophisticated optimizations?
 - [x] Write tests(needs more).
 
