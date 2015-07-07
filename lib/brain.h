@@ -140,6 +140,7 @@ static void brain_parse_instr(Brain *brn, char *instr) {
 **********************************************************/
 static int brain_init_brackets(Brain* brn) {
 
+	int r = 0;
 	size_t *stack = malloc(sizeof(*stack)*brn->instr_len);
 	size_t cur, st_ptr = 0;
 	char token;
@@ -154,14 +155,18 @@ static int brain_init_brackets(Brain* brn) {
 			brn->instr[stack[st_ptr]].value = cur;
 		}
 	} 
+
 	/* if stack is not empty, return since a bracket or more was not matched. */
 	if (st_ptr != 0) {
 		fprintf(brn->err, "ERROR: Unmatched bracket during initiation process, returning with failure.\n");
-		return BRAIN_INIT_BRACKET_MISMATCH;
+		r = BRAIN_INIT_BRACKET_MISMATCH;
+		goto cleanup;
 	}
 
-	free(stack);
-	return 0;
+	cleanup:
+		free(stack);
+
+	return r;
 }
 
 int brain_load_instr(Brain *brn, char *instructions) {
