@@ -151,19 +151,22 @@ static int brain_init_brackets(Brain* brn) {
 			stack[st_ptr++] = cur;
 		}
 		else if (token == BRAIN_OP_RIGHT_BRACKET) {
-			brn->instr[cur].value = stack[--st_ptr];
+			--st_ptr;
+			if (st_ptr > brn->instr_len) goto fail;
+			brn->instr[cur].value = stack[st_ptr];
 			brn->instr[stack[st_ptr]].value = cur;
 		}
 	} 
 
 	/* if stack is not empty, return since a bracket or more was not matched. */
+fail:
 	if (st_ptr != 0) {
 		fprintf(brn->err, "ERROR: Unmatched bracket during initiation process, returning with failure.\n");
 		r = BRAIN_INIT_BRACKET_MISMATCH;
 		goto cleanup;
 	}
 
-	cleanup:
+cleanup:
 		free(stack);
 
 	return r;
@@ -230,8 +233,7 @@ int brain_run_instr(Brain *brn) {
 			case BRAIN_OP_DUMP: brain_dump_memory(brn); break;
 			default: break;
 		}
-	
-		
+
 		if (brn->ptr > BRAIN_MEM_SIZE) {
 			fprintf(brn->err, "ERROR: Memory pointer out of bounds, returning with failure.\n");
 			fprintf(brn->err, " - pointer was at: %zu\n", brn->ptr);
@@ -245,7 +247,6 @@ int brain_run_instr(Brain *brn) {
 			fprintf(brn->err, " - instruction size was: %zu\n", brn->instr_len);
 			return BRAIN_PC_OUT_OF_BOUNDS;
 		}
-		
 
 	}
 	return 0;

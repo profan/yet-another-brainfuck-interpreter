@@ -78,10 +78,16 @@ int main(int argc, char **argv) {
 	if (args.mode == STANDARD_MODE) {
 		char* instr = load_file(args.args[0]);
 		Brain *data = brain_create();
-		brain_load_instr(data, instr);
-		int statuscode = brain_run_instr(data);
-		brain_destroy(data);
-		free(instr);
+		int errcode = brain_load_instr(data, instr);
+		if (errcode == 0) {
+			int statuscode = brain_run_instr(data);
+			brain_destroy(data);
+			free(instr);
+		} else {
+			brain_destroy(data);
+			free(instr);
+			return EXIT_FAILURE;
+		}
 	} else if (args.mode == REPL_MODE) {
 		return EXIT_FAILURE;
 	} else {
