@@ -43,6 +43,9 @@
 #define BRAIN_OP_RIGHT_BRACKET		']'
 #define BRAIN_OP_DUMP			'#'
 
+/* optimized instructions */
+#define BRAIN_OP_SET '='
+
 #define BRAIN_EOL 10 /* eol character value! */
 
 /* error return codes! */
@@ -117,15 +120,27 @@ static void brain_parse_instr(Brain *brn, char *instr) {
 				continue;
 		}
 
-		if (token != brn->instr[newsize].type) {
+		/* if we see a pattern like [-], convert this to an explicit set to 0 */
+		if (cur < (instr_len - 2) &&
+				instr[cur] == BRAIN_OP_LEFT_BRACKET &&
+				instr[cur+1] == BRAIN_OP_SUB &&
+				instr[cur+2] == BRAIN_OP_RIGHT_BRACKET) {
+			brn->instr[newsize].type = BRAIN_OP_SET;
+			brn->instr[newsize].value = 0;
+			cur += 2; /* skip two */
+			++newsize;
+		} else if (token == brn->instr[newsize - 1].type &&
+				(token == BRAIN_OP_ADD ||
+				 token == BRAIN_OP_SUB ||
+				 token == BRAIN_OP_PTR_LEFT ||
+				 token == BRAIN_OP_PTR_RIGHT)) {
+			++brn->instr[newsize - 1].value;
+		} else {
 			brn->instr[newsize].type = token;
 			brn->instr[newsize].value = 1;
 			++newsize;
-		} else {
-			if (token == BRAIN_OP_ADD || token == BRAIN_OP_SUB || token == BRAIN_OP_PTR_LEFT || token == BRAIN_OP_PTR_RIGHT) {
-				++brn->instr[newsize].value;
-			}
 		}
+
 	}
 
 	/* set actual instruction length size. */
@@ -230,6 +245,7 @@ int brain_run_instr(Brain *brn) {
 					((brn->mem[brn->ptr]=(char)in) == '\n') ? BRAIN_EOL:(char)in;
 				break;
 #endif
+			case BRAIN_OP_SET: brn->mem[brn->ptr] = brn->instr[pc].value; break;
 			case BRAIN_OP_DUMP: brain_dump_memory(brn); break;
 			default: break;
 		}
