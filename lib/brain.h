@@ -124,17 +124,36 @@ static void brain_parse_instr(Brain *brn, char *instr) {
 		if (cur < (instr_len - 2) &&
 				instr[cur] == BRAIN_OP_LEFT_BRACKET &&
 				instr[cur+1] == BRAIN_OP_SUB &&
-				instr[cur+2] == BRAIN_OP_RIGHT_BRACKET) {
+				instr[cur+2] == BRAIN_OP_RIGHT_BRACKET)
+		{
 			brn->instr[newsize].type = BRAIN_OP_SET;
 			brn->instr[newsize].value = 0;
 			cur += 2; /* skip two */
 			++newsize;
-		} else if (token == brn->instr[newsize - 1].type &&
-				(token == BRAIN_OP_ADD ||
-				 token == BRAIN_OP_SUB ||
-				 token == BRAIN_OP_PTR_LEFT ||
-				 token == BRAIN_OP_PTR_RIGHT)) {
-			++brn->instr[newsize - 1].value;
+		} else if (cur < (instr_len - 1) &&
+				instr[cur] == BRAIN_OP_LEFT_BRACKET &&
+				instr[cur+1] == BRAIN_OP_RIGHT_BRACKET)
+		{
+			continue; /* skip empty loops */
+		} else if ((token == BRAIN_OP_ADD ||
+					token == BRAIN_OP_SUB ||
+					token == BRAIN_OP_PTR_LEFT ||
+					token == BRAIN_OP_PTR_RIGHT) &&
+				(token == brn->instr[newsize - 1].type ||
+				 (token == BRAIN_OP_ADD && brn->instr[newsize - 1].type == BRAIN_OP_SUB) ||
+				 (token == BRAIN_OP_SUB && brn->instr[newsize - 1].type == BRAIN_OP_ADD) ||
+				 (token == BRAIN_OP_PTR_LEFT && brn->instr[newsize - 1].type == BRAIN_OP_PTR_RIGHT) ||
+				 (token == BRAIN_OP_PTR_RIGHT && brn->instr[newsize - 1].type == BRAIN_OP_PTR_LEFT)))
+		{
+			if ((token == BRAIN_OP_ADD && brn->instr[newsize - 1].type == BRAIN_OP_SUB) ||
+					(token == BRAIN_OP_SUB && brn->instr[newsize - 1].type == BRAIN_OP_ADD) ||
+					(token == BRAIN_OP_PTR_LEFT && brn->instr[newsize - 1].type == BRAIN_OP_PTR_RIGHT) ||
+					(token == BRAIN_OP_PTR_RIGHT && brn->instr[newsize - 1].type == BRAIN_OP_PTR_LEFT))
+			{
+				--brn->instr[newsize - 1].value;
+			} else {
+				++brn->instr[newsize - 1].value;
+			}
 		} else {
 			brn->instr[newsize].type = token;
 			brn->instr[newsize].value = 1;
