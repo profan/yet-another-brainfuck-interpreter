@@ -101,12 +101,12 @@ void brain_destroy(Brain *brn) {
 *******************************************************/
 
 static void brain_parse_instr(Brain *brn, char *instr) {
-	
+
 	char token;
 	size_t cur, newsize = 0, instr_len = strlen(instr);
 	for (cur = 0; cur < instr_len; ++cur) {
 		token = instr[cur];
-		
+
 		if (token != BRAIN_OP_ADD && 
 			token != BRAIN_OP_SUB && 
 			token != BRAIN_OP_PTR_LEFT &&
@@ -134,7 +134,9 @@ static void brain_parse_instr(Brain *brn, char *instr) {
 				instr[cur] == BRAIN_OP_LEFT_BRACKET &&
 				instr[cur+1] == BRAIN_OP_RIGHT_BRACKET)
 		{
-			continue; /* skip empty loops */
+			cur += 1; /* skip next then */
+			continue;
+		/* convert patterns of alternating sequences of +, - as well as <, > into a single instruction. */
 		} else if ((token == BRAIN_OP_ADD ||
 					token == BRAIN_OP_SUB ||
 					token == BRAIN_OP_PTR_LEFT ||
