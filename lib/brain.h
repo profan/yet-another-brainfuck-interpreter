@@ -86,10 +86,17 @@ void 	brain_dump_memory(Brain* brn);
 /* End of prototypes and header, implementation follows. */
 
 Brain* brain_create() {
+
 	Brain *brn = malloc(sizeof(*brn));
+
 	brn->in = stdin;
 	brn->out = stdout;
 	brn->err = stderr;
+
+	/* zero memory before first run. */
+	memset(&brn->mem, 0, sizeof(brn->mem));
+	brn->ptr = 0;
+
 	return brn;
 }
 
