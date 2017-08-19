@@ -69,9 +69,14 @@ typedef struct {
 	unsigned int flags;
 } Brain;
 
+enum {
+	RESET_STATE,
+	KEEP_STATE
+};
+
 Brain* 	brain_create();
 void 	brain_destroy(Brain *brn);
-int 	brain_load_instr(Brain *brn, char *instr);
+int 	brain_load_instr(Brain *brn, char *instr, int reset_state);
 void	brain_set_in_fd(Brain *brn, FILE *file);
 void	brain_set_out_fd(Brain *brn, FILE *file);
 void	brain_set_err_fd(Brain *brn, FILE *file);
@@ -208,7 +213,7 @@ cleanup:
 	return r;
 }
 
-int brain_load_instr(Brain *brn, char *instructions) {
+int brain_load_instr(Brain *brn, char *instructions, int reset_state) {
 	memset(&brn->instr, 0, sizeof(brn->instr));
 	brain_parse_instr(brn, instructions);
 
@@ -216,8 +221,10 @@ int brain_load_instr(Brain *brn, char *instructions) {
 	if ((init_status = brain_init_brackets(brn)) != 0)
 		return init_status;
 
-	memset(&brn->mem, 0, sizeof(brn->mem));
-	brn->ptr = 0;
+	if (reset_state == RESET_STATE) {
+		memset(&brn->mem, 0, sizeof(brn->mem));
+		brn->ptr = 0;
+	}
 
 	return 0;
 }

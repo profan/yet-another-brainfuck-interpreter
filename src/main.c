@@ -59,7 +59,7 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
 			args->args[state->arg_num] = arg;
 			break;
 		case ARGP_KEY_END:
-			if (state->arg_num < 1)
+			if (args->mode == STANDARD_MODE && (state->arg_num < 1 || state->arg_num > 1))
 				argp_usage(state);
 			break;
 		default: 
@@ -76,9 +76,11 @@ int main(int argc, char **argv) {
 	argp_parse(&argp, argc, argv, 0, 0, &args);	
 
 	if (args.mode == STANDARD_MODE) {
+
 		char* instr = load_file(args.args[0]);
 		Brain *data = brain_create();
-		int errcode = brain_load_instr(data, instr);
+		int errcode = brain_load_instr(data, instr, RESET_STATE);
+
 		if (errcode == 0) {
 			int statuscode = brain_run_instr(data);
 			brain_destroy(data);
@@ -88,12 +90,33 @@ int main(int argc, char **argv) {
 			free(instr);
 			return EXIT_FAILURE;
 		}
+
 	} else if (args.mode == REPL_MODE) {
-		return EXIT_FAILURE;
+
+		Brain* data = brain_create();
+
+		char* instr;
+		size_t instr_len;
+		ssize_t read;
+
+		printf("> ");
+		while ((read = getline(&instr, &instr_len, stdin)) != -1) {
+			if (read > 0) {
+				int errcode = brain_load_instr(data, instr, KEEP_STATE);
+				if (errcode == 0) {
+					int statuscode = brain_run_instr(data);
+				} else {
+					brain_destroy(data);
+					return EXIT_FAILURE;
+				}
+				printf("\n> ");
+			}
+		}
 	} else {
 		return EXIT_FAILURE;
 	}	
 
-	return 0;
+	return EXIT_SUCCESS;
+
 }
 

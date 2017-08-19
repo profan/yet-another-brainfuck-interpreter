@@ -31,7 +31,7 @@ int tests_run = 0; /* connects with extern in minunit.h */
 
 static void test_run(const char *testfile) {
 	char *instr = load_file(testfile);
-	brain_load_instr(brain, instr);
+	brain_load_instr(brain, instr, RESET_STATE);
 	brain_run_instr(brain);
 	free(instr);
 }
